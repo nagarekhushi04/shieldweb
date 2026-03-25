@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ShieldWeb3 Popup</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 380px;
+      height: 500px;
+      background-color: #0F172A;
+      color: #F8FAFC;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      background-color: #1E293B;
+      border-bottom: 1px solid #334155;
+    }
+    header svg { width: 28px; height: 28px; margin-right: 12px; }
+    h1 { margin: 0; font-size: 20px; font-weight: 700; color: #3B82F6; }
+    main { padding: 16px; flex: 1; overflow-y: auto; }
+    .card { background-color: #1E293B; border-radius: 8px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .status-badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-weight: bold; font-size: 14px; margin-bottom: 8px; }
+    .safe { background-color: #065F46; color: #34D399; }
+    .threat { background-color: #7F1D1D; color: #F87171; }
+    .unknown { background-color: #475569; color: #CBD5E1; }
+    .domain { font-size: 18px; font-weight: 600; word-break: break-all; margin: 8px 0; }
+    .score-container { margin-top: 12px; height: 8px; background: #334155; border-radius: 4px; overflow: hidden; }
+    .score-bar { height: 100%; background: #3B82F6; transition: width 0.3s; }
+    .details { font-size: 13px; color: #94A3B8; margin-top: 10px; }
+    .btn { display: block; width: 100%; padding: 10px; border: none; border-radius: 6px; background: #3B82F6; color: #FFF; font-weight: bold; cursor: pointer; text-align: center; margin-top: 12px; }
+    .btn:disabled { background: #475569; cursor: not-allowed; }
+    .btn-report { background: #DC2626; }
+    .separator { height: 1px; background: #334155; margin: 16px 0; }
+    .wallet-section { font-size: 14px; }
+    .stats { color: #94A3B8; font-size: 13px; margin-top: 16px; text-align: center; }
+    footer { padding: 12px; text-align: center; background: #1E293B; border-top: 1px solid #334155; }
+    footer a { color: #3B82F6; text-decoration: none; font-size: 14px; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <header>
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#3B82F6" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="50%" y="55%" font-size="6" fill="#FFF" font-weight="bold" text-anchor="middle" dominant-baseline="middle">SW3</text>
+    </svg>
+    <h1>ShieldWeb3</h1>
+  </header>
+  <main>
+    <div class="card" id="statusCard">
+      <div id="statusBadge" class="status-badge unknown">Checking...</div>
+      <div id="domainName" class="domain">Loading...</div>
+      <div class="score-container"><div id="scoreBar" class="score-bar" style="width: 0%;"></div></div>
+      <div id="detailsDiv" class="details"></div>
+      <button id="reportBtn" class="btn btn-report" style="display:none;">Report This Site</button>
+    </div>
+    
+    <div class="separator"></div>
+    
+    <div class="card wallet-section">
+      <div style="font-weight:600;margin-bottom:4px;">Connected Wallet</div>
+      <div id="walletAddress" style="color:#94A3B8;">Not connected</div>
+      <a href="https://shieldweb3.vercel.app" target="_blank" style="color:#3B82F6;font-size:13px;display:block;margin-top:8px;">Connect on Dashboard</a>
+    </div>
+
+    <div class="stats" id="statsDiv">Sites protected: 0</div>
+  </main>
+  <footer>
+    <a href="https://shieldweb3.vercel.app" target="_blank">shieldweb3.vercel.app</a>
+  </footer>
+  <script src="popup.js"></script>
+</body>
+</html>

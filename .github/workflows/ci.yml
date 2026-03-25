@@ -1,20 +1,66 @@
-name: CI
-on: [push, pull_request]
+name: ShieldWeb3 CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
 jobs:
-  build:
+  lint-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: '20' }
+        with:
+          node-version: '20'
+          cache: 'npm'
       - run: npm ci
       - run: npm run build
-      - run: npm run lint
-  test:
+      - run: npm run test
+  
+  test-ml:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: '20' }
-      - run: npm ci
-      - run: npm run test
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: cd apps/ml-service && pip install -r requirements.txt
+      - run: cd apps/ml-service && python model/train.py
+      - run: cd apps/ml-service && python -m pytest tests/ -v
+  
+  check-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: 'wasm32-unknown-unknown'
+      - run: cd packages/contracts/threat-registry && cargo check
+      - run: cd packages/contracts/reward-token && cargo check
+  
+  deploy-preview:
+    if: github.event_name == 'pull_request'
+    needs: lint-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+  
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    needs: [lint-test, test-ml]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'

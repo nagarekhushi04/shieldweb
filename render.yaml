@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: shieldweb3-ml
+    env: python
+    buildCommand: "cd apps/ml-service && pip install -r requirements.txt && python model/train.py"
+    startCommand: "cd apps/ml-service && uvicorn main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PORT
+        value: 8000

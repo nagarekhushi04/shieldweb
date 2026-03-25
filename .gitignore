@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+*.env.local
+.turbo/
+__pycache__/
+*.pyc
+target/
+.soroban/
+*.wasm

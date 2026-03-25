@@ -1,13 +1,11 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { createClient } from 'redis';
+import { redisClient } from '../db';
 import Threat from '../models/Threat';
 import { hashUrl, checkThreatOnChain } from '../services/stellarService';
 import { scoreUrl } from '../services/mlService';
 
 const router = Router();
-const redisClient = createClient({ url: process.env.REDIS_URL || 'redis://localhost:6379' });
-redisClient.connect().catch(console.error);
 
 const urlSchema = z.string().url();
 

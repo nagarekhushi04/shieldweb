@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useThreatStore } from '../store/threatStore';
-import { ShieldAlert, ShieldCheck, Shield } from 'lucide-react';
+import { ShieldAlert, ShieldCheck, Zap } from 'lucide-react';
 
 export const ThreatChecker: React.FC = () => {
   const [url, setUrl] = useState('');
@@ -17,47 +18,82 @@ export const ThreatChecker: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto mt-10">
-      <form onSubmit={handleCheck} className="flex flex-col sm:flex-row shadow-lg">
-        <input
-          type="url"
-          required
-          placeholder="Paste a URL to check for threats..."
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          className="flex-1 bg-slate border border-gray-700 text-white rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none px-4 py-3 focus:outline-none focus:border-primary-blue"
-        />
-        <button
-          type="submit"
-          disabled={isChecking}
-          className="bg-primary-blue text-white font-semibold px-6 py-3 rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none hover:bg-blue-600 disabled:opacity-50 transition-colors"
-        >
-          {isChecking ? 'Checking...' : 'Check Now'}
-        </button>
-      </form>
-      <p className="text-xs text-gray-400 mt-2 text-center">
-        Powered by AI + Stellar blockchain • Real-time • Decentralized
-      </p>
-
-      {lastResult && (
-        <div className={`mt-6 p-6 rounded-lg border-l-4 ${lastResult.safe ? 'border-safe-green bg-slate/50' : 'border-threat-red bg-slate/50'}`}>
-          <div className="flex items-center gap-4">
-            {lastResult.safe ? (
-              <ShieldCheck className="h-10 w-10 text-safe-green" />
+    <div className="w-full max-w-2xl mx-auto mt-12 px-4">
+      <form onSubmit={handleCheck} className="relative group">
+        <div className="absolute -inset-1 bg-gradient-to-r from-primary-blue to-purple-600 rounded-2xl blur opacity-25 group-focus-within:opacity-50 transition duration-1000 group-focus-within:duration-200" />
+        <div className="relative flex flex-col sm:flex-row gap-2">
+          <input
+            type="url"
+            required
+            placeholder="Enter web link to verify..."
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            className="flex-1 glass-card border-white/10 text-white rounded-xl px-6 py-4 focus:outline-none input-focus-ring text-lg"
+          />
+          <button
+            type="submit"
+            disabled={isChecking}
+            className="btn-primary text-white font-bold px-8 py-4 rounded-xl disabled:opacity-50 flex items-center justify-center gap-2 whitespace-nowrap min-w-[150px]"
+          >
+            {isChecking ? (
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
-              <ShieldAlert className="h-10 w-10 text-threat-red" />
+              <>
+                <Zap className="h-5 w-5 fill-current" />
+                Scan Link
+              </>
             )}
-            <div>
-              <h3 className="text-xl font-bold text-white">
-                {lastResult.safe ? 'Safe' : 'Phishing Detected'}
-              </h3>
-              <p className="text-gray-300">
-                {lastResult.safe ? 'No threats detected for this domain.' : 'This site is verified as malicious.'}
-              </p>
-            </div>
-          </div>
+          </button>
         </div>
-      )}
+      </form>
+      
+      <div className="flex items-center justify-center gap-3 mt-4 text-gray-500 text-sm">
+        <div className="w-1.5 h-1.5 rounded-full bg-safe-green animate-pulse" />
+        AI Engine: Online
+        <span className="mx-1">•</span>
+        Stellar Ledger: Verified
+      </div>
+
+      <AnimatePresence>
+        {lastResult && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className={`mt-8 p-8 rounded-2xl glass-card border-t-4 shadow-2xl ${lastResult.safe ? 'border-t-safe-green bg-safe-green/[0.02]' : 'border-t-threat-red bg-threat-red/[0.02]'}`}
+          >
+            <div className="flex items-center gap-6">
+              <div className={`p-4 rounded-2xl ${lastResult.safe ? 'bg-safe-green/10' : 'bg-threat-red/10'}`}>
+                {lastResult.safe ? (
+                  <ShieldCheck className="h-12 w-12 text-safe-green" />
+                ) : (
+                  <ShieldAlert className="h-12 w-12 text-threat-red" />
+                )}
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-1">
+                  <h3 className={`text-2xl font-bold ${lastResult.safe ? 'text-safe-green' : 'text-threat-red'}`}>
+                    {lastResult.safe ? 'Secure Domain' : 'Security Alert'}
+                  </h3>
+                  <span className="text-xs font-mono text-gray-500 uppercase tracking-widest bg-white/5 px-2 py-1 rounded">
+                    Score: {lastResult.mlScore.toFixed(2)}
+                  </span>
+                </div>
+                <p className="text-gray-300 text-lg">
+                  {lastResult.safe ? 'Our AI verifies this URL is safe to visit.' : 'This site is verified as malicious.'}
+                </p>
+                {!lastResult.safe && (
+                  <div className="mt-4 flex gap-4">
+                    <button className="text-sm font-bold text-threat-red bg-threat-red/20 px-4 py-2 rounded-lg hover:bg-threat-red/30 transition-colors">
+                      Report to Stellar
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

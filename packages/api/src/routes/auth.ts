@@ -1,12 +1,10 @@
 import { Router } from 'express';
-import { createClient } from 'redis';
+import { redisClient } from '../db';
 import * as StellarSdk from '@stellar/stellar-sdk';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
 const router = Router();
-const redisClient = createClient({ url: process.env.REDIS_URL || 'redis://localhost:6379' });
-redisClient.connect().catch(console.error);
 
 router.post('/challenge', async (req, res) => {
     try {

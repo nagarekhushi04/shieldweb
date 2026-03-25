@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ThreatCheckResult, GlobalStats } from '../types';
+import type { ThreatCheckResult, GlobalStats } from '../types';
 import { checkUrl, getGlobalStats } from '../lib/api';
 
 interface ThreatState {

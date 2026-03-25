@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { getMyReports } from '../lib/api';
-import { Report } from '../types';
+import type { Report } from '../types';
 
 export const DashboardPage: React.FC = () => {
   const { user, isConnected } = useAuthStore();

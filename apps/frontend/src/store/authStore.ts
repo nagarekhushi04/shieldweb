@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { User } from '../types';
+import type { User } from '../types';
 import { getChallenge, verifyAuth } from '../lib/api';
 import { isFreighterInstalled, connectWallet, signChallenge } from '../lib/stellar';
 import { toast } from 'react-hot-toast';
@@ -68,7 +68,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       
       let signature;
       try {
-        signature = await signChallenge(challenge);
+        signature = await signChallenge(challenge, walletAddress);
       } catch (err) {
         toast.error('Message signature rejected.');
         return;

@@ -1,6 +1,5 @@
 import express from 'express';
-import mongoose from 'mongoose';
-import { createClient } from 'redis';
+
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -11,7 +10,11 @@ import reportRoutes from './routes/reports';
 import rewardRoutes from './routes/rewards';
 import statsRoutes from './routes/stats';
 
+import { connectDB, redisStatus, mongoStatus } from './db';
+
 dotenv.config();
+
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -28,16 +31,7 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
-const redisClient = createClient({ url: process.env.REDIS_URL || 'redis://localhost:6379' });
-let redisStatus = 'connecting';
-redisClient.on('error', (err) => { console.error('Redis error', err); redisStatus = 'error'; });
-redisClient.on('connect', () => { console.log('Redis connected'); redisStatus = 'connected'; });
-redisClient.connect().catch(console.error);
 
-let mongoStatus = 'connecting';
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/shieldweb3')
-    .then(() => { console.log('MongoDB connected'); mongoStatus = 'connected'; })
-    .catch(err => { console.error('MongoDB error', err); mongoStatus = 'error'; });
 
 app.use('/api/auth', authRoutes);
 app.use('/api/threats', threatRoutes);
@@ -50,8 +44,8 @@ app.get('/health', (req, res) => {
         status: 'ok',
         timestamp: new Date().toISOString(),
         version: '1.0.0',
-        mongodb: mongoStatus,
-        redis: redisStatus
+        mongodb: mongoStatus.status,
+        redis: redisStatus.status
     });
 });
 

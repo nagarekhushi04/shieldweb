@@ -1,9 +1,14 @@
 {
-  "buildCommand": "npm run build --workspace=apps/frontend",
+  "version": 2,
+  "buildCommand": "cd apps/frontend && npm install && npm run build",
   "outputDirectory": "apps/frontend/dist",
-  "framework": "vite",
+  "installCommand": "npm install",
+  "framework": null,
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://shieldweb3-api.railway.app/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  ],
+  "env": {
+    "VITE_API_URL": "@shieldweb3_api_url",
+    "VITE_STELLAR_NETWORK": "testnet"
+  }
 }

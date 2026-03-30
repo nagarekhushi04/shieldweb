@@ -7,7 +7,7 @@ export const ReportPage: React.FC = () => {
   const [url, setUrl] = useState('');
   const [evidence, setEvidence] = useState('');
   const [description, setDescription] = useState('');
-  const [threatType, setThreatType] = useState('Phishing');
+  const [threatType, setThreatType] = useState('phishing');
   const [severity, setSeverity] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const { isConnected } = useAuthStore();
@@ -26,8 +26,12 @@ export const ReportPage: React.FC = () => {
       setUrl('');
       setEvidence('');
       setDescription('');
-    } catch (e: any) {
-      toast.error('Failed to submit report.');
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        toast.error('Session expired. Please reconnect your wallet.');
+      } else {
+        toast.error('Failed to submit report. Please check your inputs.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -45,9 +49,12 @@ export const ReportPage: React.FC = () => {
           <div>
             <label className="block text-sm text-gray-400 mb-1">Threat Type</label>
             <select value={threatType} onChange={e => setThreatType(e.target.value)} className="w-full bg-navy border border-gray-700 rounded-lg p-3 text-white">
-              <option value="Phishing">Phishing</option>
-              <option value="Scam">Scam/Rug Pull</option>
-              <option value="Malware">Malware</option>
+              <option value="phishing">Phishing</option>
+              <option value="scam">Scam</option>
+              <option value="malware">Malware</option>
+              <option value="rug_pull">Rug Pull</option>
+              <option value="fake_wallet">Fake Wallet</option>
+              <option value="other">Other</option>
             </select>
           </div>
           <div>

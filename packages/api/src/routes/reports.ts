@@ -42,7 +42,12 @@ router.post('/submit', requireAuth, async (req: AuthRequest, res) => {
         await threat.save();
 
         const txHash = await reportThreatOnChain('SECRET_PLACEHOLDER', hash, validated.threatType, validated.severity);
-        
+        if (txHash) {
+            threat.onChainTxHash = txHash;
+            threat.onChain = true;
+            await threat.save();
+        }
+
         await User.updateOne({ walletAddress: req.user.walletAddress }, { $inc: { totalReports: 1 } });
 
         res.json({ reportId: threat._id, mlScore: mlRes.score, txHash });
@@ -53,7 +58,17 @@ router.post('/submit', requireAuth, async (req: AuthRequest, res) => {
 
 router.get('/my-reports', requireAuth, async (req: AuthRequest, res) => {
     try {
-        const reports = await Threat.find({ "reportedBy.walletAddress": req.user.walletAddress });
+        const threats = await Threat.find({ "reportedBy.walletAddress": req.user.walletAddress }).sort({ createdAt: -1 });
+        const reports = threats.map(t => ({
+            _id: t._id,
+            url: t.originalUrl,
+            threatType: t.threatType,
+            severity: t.severity,
+            status: t.verified ? 'Verified' : 'Pending',
+            reward: t.verified ? 10 : 0,
+            createdAt: t.createdAt,
+            txHash: t.onChainTxHash || null
+        }));
         res.json(reports);
     } catch {
         res.status(500).json({ error: 'Error' });

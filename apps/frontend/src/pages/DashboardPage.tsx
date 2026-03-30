@@ -66,6 +66,7 @@ export const DashboardPage: React.FC = () => {
                   <th className="p-4 border-b border-gray-700">URL</th>
                   <th className="p-4 border-b border-gray-700">Status</th>
                   <th className="p-4 border-b border-gray-700">Reward</th>
+                  <th className="p-4 border-b border-gray-700">TxHash</th>
                   <th className="p-4 border-b border-gray-700">Date</th>
                 </tr>
               </thead>
@@ -79,12 +80,19 @@ export const DashboardPage: React.FC = () => {
                       </span>
                     </td>
                     <td className="p-4 text-primary-blue">+{report.reward} SHW3</td>
+                    <td className="p-4 font-mono text-xs text-gray-400">
+                      {report.txHash ? 
+                        <a href={`https://stellar.expert/explorer/testnet/tx/${report.txHash}`} target="_blank" rel="noreferrer" className="hover:text-primary-light underline">
+                          {report.txHash.slice(0, 10)}...
+                        </a> 
+                      : 'Pending'}
+                    </td>
                     <td className="p-4 text-gray-400 text-sm">{new Date(report.createdAt).toLocaleDateString()}</td>
                   </tr>
                 ))}
                 {reports.length === 0 && (
                   <tr>
-                    <td colSpan={4} className="p-6 text-center text-gray-400">No reports submitted yet.</td>
+                    <td colSpan={5} className="p-6 text-center text-gray-400">No reports submitted yet.</td>
                   </tr>
                 )}
               </tbody>

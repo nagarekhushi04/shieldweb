@@ -19,7 +19,7 @@ router.get('/global', async (req, res) => {
             { $sort: { count: -1 } }
         ]);
 
-        res.json({ totalThreats, verifiedThreats, totalReporters, threatsToday, topThreatTypes });
+        res.json({ totalThreats, verifiedThreats, totalReporters, threatsBlockedToday: threatsToday, topThreatTypes });
     } catch (err) {
         res.status(500).json({ error: "Error" });
     }
@@ -27,8 +27,18 @@ router.get('/global', async (req, res) => {
 
 router.get('/leaderboard', async (req, res) => {
     try {
-        const users = await User.find().sort({ verifiedReports: -1 }).limit(10).select('walletAddress name verifiedReports totalRewardsEarned reputation');
-        res.json(users);
+        const users = await User.find().sort({ verifiedReports: -1 }).limit(10);
+        
+        const formatted = users.map((user, index) => ({
+            rank: index + 1,
+            walletAddress: user.walletAddress,
+            totalReports: user.totalReports || 0,
+            verifiedReports: user.verifiedReports || 0,
+            shw3Earned: user.totalRewardsEarned || 0,
+            badge: index === 0 ? 'Legend' : index < 3 ? 'Elite' : 'Defender'
+        }));
+
+        res.json(formatted);
     } catch {
         res.status(500).json({ error: "Error" });
     }

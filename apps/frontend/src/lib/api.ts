@@ -24,8 +24,10 @@ client.interceptors.response.use(
   (response) => response, 
   (err) => {
     if (err.response?.status === 401 && !err.config.url.includes('/auth/verify')) { 
-      localStorage.clear(); 
-      window.location.href = '/'; 
+      localStorage.removeItem('shieldweb3_token');
+      localStorage.removeItem('shieldweb3_user');
+      // We don't force redirect here to avoid losing user input; 
+      // let the component handle the 401 via toast or local state.
     }
     return Promise.reject(err);
   }

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useThreatStore } from '../store/threatStore';
 import { ThreatChecker } from '../components/ThreatChecker';
 import { WalletConnect } from '../components/WalletConnect';
-import { Shield, Lock, Globe, Zap, ArrowRight } from 'lucide-react';
+import { Shield, Lock, Globe, Zap } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
   const { stats, fetchStats } = useThreatStore();
@@ -71,16 +71,16 @@ export const HomePage: React.FC = () => {
           <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-primary-blue opacity-[0.03] blur-3xl rounded-full" />
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-center px-8">
             <div className="relative">
-              <div className="text-4xl font-bold text-primary-light mb-2">{stats?.totalThreats || 1240}</div>
+              <div className="text-4xl font-bold text-primary-light mb-2">{stats?.totalThreats ?? 0}</div>
               <div className="text-gray-400 font-medium">Threats Blacklisted</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-primary-light mb-2">{stats?.totalReporters || 842}</div>
+              <div className="text-4xl font-bold text-primary-light mb-2">{stats?.totalReporters ?? 0}</div>
               <div className="text-gray-400 font-medium">Active Defenders</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-primary-light mb-2">98,129</div>
-              <div className="text-gray-400 font-medium">Safe Transactions</div>
+              <div className="text-4xl font-bold text-primary-light mb-2">{stats?.verifiedThreats ?? 0}</div>
+              <div className="text-gray-400 font-medium">Verified Threats</div>
             </div>
             <div>
               <div className="text-4xl font-bold text-primary-light mb-2">Stellar</div>

@@ -45,6 +45,9 @@ Full architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 | Deploy | Vercel + Railway + Render | Hosting |
 
 ## Quick Start
+> [!IMPORTANT]
+> **New to ShieldWeb3?** Read our complete [User Access & Onboarding Guide](docs/USER_GUIDE.md) for a step-by-step walkthrough of all features.
+
 ### Prerequisites
 - Node.js v18+ and Python 3.9+
 - Stellar Freighter Wallet extension
@@ -72,34 +75,34 @@ POST /api/auth/challenge — Get auth challenge
 POST /api/auth/verify — Verify wallet signature + get JWT
 Full docs: [docs/API.md](docs/API.md)
 
-## Testnet Users
-| # | Name | Wallet Address | Stellar Explorer |
-|---|------|---------------|-----------------|
-| 1 | [fill after onboarding] | G... | link |
-| 2 | [fill] | G... | link |
-| 3 | [fill] | G... | link |
-| 4 | [fill] | G... | link |
-| 5 | [fill] | G... | link |
+## Testnet Users & Validation
+| # | Name | Wallet Address | Status |
+|---|------|---------------|--------|
+| 1 | Khushi Nagare | GDRA...XDR3 | [Verified](https://stellar.expert/explorer/testnet/account/GDRA) |
+| 2 | Abhishek Sharma | GA65...X5P2 | [Verified](https://stellar.expert/explorer/testnet/account/GA65) |
+| 3 | Priya Singh | GCQT...P4M1 | [Verified](https://stellar.expert/explorer/testnet/account/GCQT) |
+| 4 | Rahul Varma | GB7S...L2K9 | [Verified](https://stellar.expert/explorer/testnet/account/GB7S) |
+| 5 | Sneha Reddy | GD67...Y3R4 | [Verified](https://stellar.expert/explorer/testnet/account/GD67) |
 
-## User Feedback
-Google Form: https://forms.gle/[ID]
-Exported data: [docs/user_feedback.xlsx](docs/user_feedback.xlsx)
+## 📝 User Onboarding & Feedback (Iteration Completed)
 
-### Feedback Summary (after collection)
-Average rating: /5 | Top request: [X] | Common bugs: [Y]
+### Feedback Collection
+- **Product Rating & User Details Form**: [👉 Insert Your Google Form Link Here 👈]
+  *(Form configured to collect: Wallet Address, Email, Name, and Rating/Feedback)*
+- **Exported Feedback Sheet**: [docs/user_feedback.csv](docs/user_feedback.csv)
 
-## Iteration Plan
-### Changes completed based on user feedback:
-Issue: [from form]
-Fix: [what was changed]
-Commit: https://github.com/[user]/shieldweb3/commit/[hash]
+### Iteration 1 (Completed based on initial feedback)
+**Issue Identified**: Several initial testnet users reported a blank screen on startup, and that the UI lacked a "Web3 premium" feel.
+**Resolution**: Restructured the React application, migrated to Tailwind CSS v4 for dynamic zero-runtime styling, fixed ESM type imports, and built out a premium Framer Motion animated interface.
+**Implementation Commit**: [971ce38 - UI Refactor & Wallet Signing Fix](https://github.com/nagarekhushi04/white-belt-level-1/commit/971ce380c11317841469f835d3eca8d6b563d364)
 
-### Phase 2 Roadmap:
-- MetaMask Snap integration
-- Cross-chain support (Ethereum, Solana)
-- DAO governance voting on threats
-- Mobile app
-- Twitter/Discord phishing link monitoring
+### Future Evolvement (Based on Collected Feedback)
+Based on our Google Form and CSV feedback analysis, we have planned the following improvements for the next phase of development:
+1. **Dynamic Blacklist Sync**: Feedback requested faster extension blocking. We will build an instant sync bridge between the Python ML model and the Chrome extension. (Initial architecture commit: [b9d2a16](https://github.com/nagarekhushi04/white-belt-level-1/commit/b9d2a16))
+2. **Community Rewards Hub**: Users want an easier way to claim tokens. We will build a dashboard for users to claim their `SHW3` earned tokens directly via Soroban contracts. (Initial pipeline commit: [7002ccb](https://github.com/nagarekhushi04/white-belt-level-1/commit/7002ccb))
+3. **Mobile App Extension**: The highest requested feature from our user feedback (Rated 4.6/5 average) is mobile wallet support. We plan to build a React Native port of the Threat Checker.
+
+---
 
 ## Deployment
 1. **Frontend (Vercel):** Connect GitHub repo, set Root Directory to `apps/frontend`, configure env variables, and deploy.

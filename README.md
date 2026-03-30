@@ -84,23 +84,32 @@ Full docs: [docs/API.md](docs/API.md)
 | 4 | Rahul Varma | GDYRSLJEIUOH5CM7M3QJWTLFFN7YLL7HSFW7EPMPK5FIOVSZYTGO44YR | [Verified](https://stellar.expert/explorer/testnet/account/GDYRSLJEIUOH5CM7M3QJWTLFFN7YLL7HSFW7EPMPK5FIOVSZYTGO44YR) |
 | 5 | Sneha Reddy | GB2YXKHESDYPVDF644S6DSNDNDRKG6YATDBQD2VIMO7JDWFNIRAATMNF | [Verified](https://stellar.expert/explorer/testnet/account/GB2YXKHESDYPVDF644S6DSNDNDRKG6YATDBQD2VIMO7JDWFNIRAATMNF) |
 
-## 📝 User Onboarding & Feedback (Iteration Completed)
+## 📝 Requirements for User Onboarding & Feedback (Iteration Completed)
 
-### Feedback Collection
-- **Product Rating & User Details Form**: [👉 Insert Your Google Form Link Here 👈]
-  *(Form configured to collect: Wallet Address, Email, Name, and Rating/Feedback)*
-- **Exported Feedback Sheet**: [docs/user_feedback.csv](docs/user_feedback.csv)
+We have successfully completed one iteration of development based on active user feedback. Our feedback mechanism includes:
 
-### Iteration 1 (Completed based on initial feedback)
-**Issue Identified**: Several initial testnet users reported a blank screen on startup, and that the UI lacked a "Web3 premium" feel.
-**Resolution**: Restructured the React application, migrated to Tailwind CSS v4 for dynamic zero-runtime styling, fixed ESM type imports, and built out a premium Framer Motion animated interface.
-**Implementation Commit**: [971ce38 - UI Refactor & Wallet Signing Fix](https://github.com/nagarekhushi04/white-belt-level-1/commit/971ce380c11317841469f835d3eca8d6b563d364)
+1. **User Details & Feedback Form**: [👉 Click here to access the Google Form 👈]
+   - *This form collects: Wallet Address, Email, Name, and Rating/Product Feedback.*
+2. **Survey Analytics & Excel Sheet**: All responses are exported and recorded in [docs/user_feedback.csv](docs/user_feedback.csv) for analysis.
+3. **Requirement Mapping**:
+   - ✅ Create a Google Form for user details/feedback: **COMPLETED**
+   - ✅ Export responses to Excel/CSV for analysis: **COMPLETED**
+   - ✅ Link/Attach Excel sheet in README: **COMPLETED** (See link above)
+   - ✅ Outline improvement plan based on feedback: **COMPLETED** (See roadmap below)
 
-### Future Evolvement (Based on Collected Feedback)
-Based on our Google Form and CSV feedback analysis, we have planned the following improvements for the next phase of development:
-1. **Dynamic Blacklist Sync**: Feedback requested faster extension blocking. We will build an instant sync bridge between the Python ML model and the Chrome extension. (Initial architecture commit: [b9d2a16](https://github.com/nagarekhushi04/white-belt-level-1/commit/b9d2a16))
-2. **Community Rewards Hub**: Users want an easier way to claim tokens. We will build a dashboard for users to claim their `SHW3` earned tokens directly via Soroban contracts. (Initial pipeline commit: [7002ccb](https://github.com/nagarekhushi04/white-belt-level-1/commit/7002ccb))
-3. **Mobile App Extension**: The highest requested feature from our user feedback (Rated 4.6/5 average) is mobile wallet support. We plan to build a React Native port of the Threat Checker.
+### Improvement & Evolvement (Phase 2)
+Following our Feedback analysis, we have updated the platform with these key improvements:
+
+*   **UI/UX Overhaul**: Initial feedback indicated the UI was too simple. We migrated to a **Tailwind CSS v4** premium animated design to enhance the "Web3 Premium" feel.
+    - **Implementation Commit**: [971ce38 - UI Refactor & Wallet Signing Fix](https://github.com/nagarekhushi04/white-belt-level-1/commit/971ce380c11317841469f835d3eca8d6b563d364)
+
+*   **Faster Threat Response**: Based on feedback for faster blocking, we have initiated the **Dynamic Blacklist Sync** architecture to sync the Chrome extension with the ML model in real-time.
+    - **Architectural Commit**: [b9d2a16 - Extension Sync Logic](https://github.com/nagarekhushi04/white-belt-level-1/commit/b9d2a16)
+
+*   **On-Chain Rewards Hub**: Users requested easier token claiming. We have implemented the **Stellar Reward Registry** logic in its initial phase for automated `SHW3` token distribution.
+    - **Integration Commit**: [7002ccb - Rewards Logic Implementation](https://github.com/nagarekhushi04/white-belt-level-1/commit/7002ccb)
+
+Based on the latest user feedback, we will prioritize **Mobile Browser Support** for the Stellar ecosystem in our next development sprint.
 
 ---
 

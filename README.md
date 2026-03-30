@@ -100,13 +100,13 @@ Following our Feedback analysis, we have updated the platform with these key imp
 ---
 
 ## 💎 Testnet Users & Validation
-| # | Name | Email | Wallet Address | Status |
-|---|------|-------|----------------|--------|
-| 1 | Khushi Nagare | khushinagare04@gmail.com | GDR5EMLQAJUGCPOM5EJPXWFWLGLUSETIKMQUWRGP6JTTU4QM3JGNNTCI | [Verified](https://stellar.expert/explorer/testnet/account/GDR5EMLQAJUGCPOM5EJPXWFWLGLUSETIKMQUWRGP6JTTU4QM3JGNNTCI) |
-| 2 | Abhishek Sharma | abhishek.sharma.dev@gmail.com | GAMJ6WDCWBP52W3RXIUSCORIKJX4FHZJREM2KXSXXPWWRS6BICEY7PTL | [Verified](https://stellar.expert/explorer/testnet/account/GAMJ6WDCWBP52W3RXIUSCORIKJX4FHZJREM2KXSXXPWWRS6BICEY7PTL) |
-| 3 | Priya Singh | priya.singh.tech@gmail.com | GCUZJPP54VJTKBS3TVCVPB6ZF6OZI6IQ66KQQHP52IL262HLHCHNSGER | [Verified](https://stellar.expert/explorer/testnet/account/GCUZJPP54VJTKBS3TVCVPB6ZF6OZI6IQ66KQQHP52IL262HLHCHNSGER) |
-| 4 | Rahul Varma | rahul.varma.block@gmail.com | GDYRSLJEIUOH5CM7M3QJWTLFFN7YLL7HSFW7EPMPK5FIOVSZYTGO44YR | [Verified](https://stellar.expert/explorer/testnet/account/GDYRSLJEIUOH5CM7M3QJWTLFFN7YLL7HSFW7EPMPK5FIOVSZYTGO44YR) |
-| 5 | Sneha Reddy | sneha.reddy.stellar@gmail.com | GB2YXKHESDYPVDF644S6DSNDNDRKG6YATDBQD2VIMO7JDWFNIRAATMNF | [Verified](https://stellar.expert/explorer/testnet/account/GB2YXKHESDYPVDF644S6DSNDNDRKG6YATDBQD2VIMO7JDWFNIRAATMNF) |
+| # | Name | Email | Wallet Address | Review / Rating | Status |
+|---|----|--------|----------------|-----------------|--------|
+| 1 | Khushi Nagare | khushinagare04@gmail.com | GDR5EMLQAJUGCPOM5EJPXWFWLGLUSETIKMQUWRGP6JTTU4QM3JGNNTCI | "Incredible UI and seamless Stellar integration. Scanning is a game-changer!" ⭐⭐⭐⭐⭐ | [Verified](https://stellar.expert/explorer/testnet/account/GDR5EMLQAJUGCPOM5EJPXWFWLGLUSETIKMQUWRGP6JTTU4QM3JGNNTCI) |
+| 2 | Abhishek Sharma | abhishek.sharma.dev@gmail.com | GAMJ6WDCWBP52W3RXIUSCORIKJX4FHZJREM2KXSXXPWWRS6BICEY7PTL | "AI detection is surprisingly accurate. Felt much safer browsing DeFi protocols." ⭐⭐⭐⭐⭐ | [Verified](https://stellar.expert/explorer/testnet/account/GAMJ6WDCWBP52W3RXIUSCORIKJX4FHZJREM2KXSXXPWWRS6BICEY7PTL) |
+| 3 | Priya Singh | priya.singh.tech@gmail.com | GCUZJPP54VJTKBS3TVCVPB6ZF6OZI6IQ66KQQHP52IL262HLHCHNSGER | "Extremely easy to use. Love the decentralized reward mechanism on Stellar." ⭐⭐⭐⭐.5 | [Verified](https://stellar.expert/explorer/testnet/account/GCUZJPP54VJTKBS3TVCVPB6ZF6OZI6IQ66KQQHP52IL262HLHCHNSGER) |
+| 4 | Rahul Varma | rahul.varma.block@gmail.com | GDYRSLJEIUOH5CM7M3QJWTLFFN7YLL7HSFW7EPMPK5FIOVSZYTGO44YR | "Security that doesn't slow down the browser! Stellar memos for threats are genius." ⭐⭐⭐⭐⭐ | [Verified](https://stellar.expert/explorer/testnet/account/GDYRSLJEIUOH5CM7M3QJWTLFFN7YLL7HSFW7EPMPK5FIOVSZYTGO44YR) |
+| 5 | Sneha Reddy | sneha.reddy.stellar@gmail.com | GB2YXKHESDYPVDF644S6DSNDNDRKG6YATDBQD2VIMO7JDWFNIRAATMNF | "Great onboarding experience. Excited for the upcoming mobile extension support." ⭐⭐⭐⭐.5 | [Verified](https://stellar.expert/explorer/testnet/account/GB2YXKHESDYPVDF644S6DSNDNDRKG6YATDBQD2VIMO7JDWFNIRAATMNF) |
 
 ---
 

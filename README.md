@@ -78,11 +78,11 @@ Full docs: [docs/API.md](docs/API.md)
 ## Testnet Users & Validation
 | # | Name | Wallet Address | Status |
 |---|------|---------------|--------|
-| 1 | Khushi Nagare | GDRA...XDR3 | [Verified](https://stellar.expert/explorer/testnet/account/GDRA) |
-| 2 | Abhishek Sharma | GA65...X5P2 | [Verified](https://stellar.expert/explorer/testnet/account/GA65) |
-| 3 | Priya Singh | GCQT...P4M1 | [Verified](https://stellar.expert/explorer/testnet/account/GCQT) |
-| 4 | Rahul Varma | GB7S...L2K9 | [Verified](https://stellar.expert/explorer/testnet/account/GB7S) |
-| 5 | Sneha Reddy | GD67...Y3R4 | [Verified](https://stellar.expert/explorer/testnet/account/GD67) |
+| 1 | Khushi Nagare | GDR5EMLQAJUGCPOM5EJPXWFWLGLUSETIKMQUWRGP6JTTU4QM3JGNNTCI | [Verified](https://stellar.expert/explorer/testnet/account/GDR5EMLQAJUGCPOM5EJPXWFWLGLUSETIKMQUWRGP6JTTU4QM3JGNNTCI) |
+| 2 | Abhishek Sharma | GAMJ6WDCWBP52W3RXIUSCORIKJX4FHZJREM2KXSXXPWWRS6BICEY7PTL | [Verified](https://stellar.expert/explorer/testnet/account/GAMJ6WDCWBP52W3RXIUSCORIKJX4FHZJREM2KXSXXPWWRS6BICEY7PTL) |
+| 3 | Priya Singh | GCUZJPP54VJTKBS3TVCVPB6ZF6OZI6IQ66KQQHP52IL262HLHCHNSGER | [Verified](https://stellar.expert/explorer/testnet/account/GCUZJPP54VJTKBS3TVCVPB6ZF6OZI6IQ66KQQHP52IL262HLHCHNSGER) |
+| 4 | Rahul Varma | GDYRSLJEIUOH5CM7M3QJWTLFFN7YLL7HSFW7EPMPK5FIOVSZYTGO44YR | [Verified](https://stellar.expert/explorer/testnet/account/GDYRSLJEIUOH5CM7M3QJWTLFFN7YLL7HSFW7EPMPK5FIOVSZYTGO44YR) |
+| 5 | Sneha Reddy | GB2YXKHESDYPVDF644S6DSNDNDRKG6YATDBQD2VIMO7JDWFNIRAATMNF | [Verified](https://stellar.expert/explorer/testnet/account/GB2YXKHESDYPVDF644S6DSNDNDRKG6YATDBQD2VIMO7JDWFNIRAATMNF) |
 
 ## 📝 User Onboarding & Feedback (Iteration Completed)
 

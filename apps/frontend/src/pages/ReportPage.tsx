@@ -26,8 +26,9 @@ export const ReportPage: React.FC = () => {
       setUrl('');
       setEvidence('');
       setDescription('');
-    } catch (err: any) {
-      if (err.response?.status === 401) {
+    } catch (err: unknown) {
+      const error = err as { response?: { status: number } };
+      if (error.response?.status === 401) {
         toast.error('Session expired. Please reconnect your wallet.');
       } else {
         toast.error('Failed to submit report. Please check your inputs.');

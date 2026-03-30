@@ -69,7 +69,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       let signature;
       try {
         signature = await signChallenge(challenge, walletAddress);
-      } catch (err) {
+      } catch {
         toast.error('Message signature rejected.');
         return;
       }

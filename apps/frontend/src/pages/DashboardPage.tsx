@@ -9,13 +9,21 @@ export const DashboardPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (isConnected) {
+    if (!isConnected) return;
+
+    const fetchReports = async () => {
       setLoading(true);
-      getMyReports()
-        .then(setReports)
-        .catch(console.error)
-        .finally(() => setLoading(false));
-    }
+      try {
+        const data = await getMyReports();
+        setReports(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReports();
   }, [isConnected]);
 
   if (!isConnected || !user) {

@@ -24,7 +24,7 @@ export async function getWalletAddress(): Promise<string | null> {
   try {
     const result = await getAddress();
     return result?.address || null;
-  } catch (err) {
+  } catch {
     return null;
   }
 }
@@ -55,8 +55,9 @@ export async function signChallenge(challenge: string, walletAddress: string): P
     
     if (typeof result === 'string') return result;
     return result.signedTxXdr || '';
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Signature failed", error);
-    throw new Error(error.message || 'Signature failed');
+    const msg = error instanceof Error ? error.message : 'Signature failed';
+    throw new Error(msg);
   }
 }

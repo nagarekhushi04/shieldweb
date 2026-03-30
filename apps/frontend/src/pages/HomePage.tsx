@@ -90,11 +90,10 @@ export const HomePage: React.FC = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24">
-          {[
-            { icon: Lock, title: "On-Chain Security", desc: "Every threat is cryptographically verified and stored on the Stellar ledger." },
+          {[{ icon: Lock, title: "On-Chain Security", desc: "Every threat is cryptographically verified and stored on the Stellar ledger." },
             { icon: Zap, title: "Real-Time AI", desc: "Advanced machine learning detects phishing in milliseconds before you sign." },
             { icon: Globe, title: "Community Powered", desc: "Decentralized reporting ensures no single point of failure or censorship." }
-          ].map((item, i) => (
+          ].map(({ icon: Icon, title, desc }, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, x: -20 }}
@@ -103,9 +102,9 @@ export const HomePage: React.FC = () => {
               viewport={{ once: true }}
               className="glass-card p-8 rounded-2xl hover:border-primary-blue/30 transition-all cursor-default"
             >
-              <item.icon className="h-10 w-10 text-primary-blue mb-6" />
-              <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-              <p className="text-gray-400 leading-relaxed">{item.desc}</p>
+              <Icon className="h-10 w-10 text-primary-blue mb-6" />
+              <h3 className="text-xl font-bold mb-3">{title}</h3>
+              <p className="text-gray-400 leading-relaxed">{desc}</p>
             </motion.div>
           ))}
         </div>

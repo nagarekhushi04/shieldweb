@@ -2,47 +2,80 @@ name: ShieldWeb3 CI/CD
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
     branches: [main]
 
 jobs:
-  lint-test:
+  build-and-test:
+    name: Build & Test (Monorepo)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      - run: npm ci
-      - run: npm run build
-      - run: npm run test
-  
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build packages and apps
+        run: npm run build
+
+      - name: Lint check
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm run test
+
   test-ml:
+    name: ML Model Security Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      - run: cd apps/ml-service && pip install -r requirements.txt
-      - run: cd apps/ml-service && python model/train.py
-      - run: cd apps/ml-service && python -m pytest tests/ -v
-  
+          cache: 'pip'
+
+      - name: Install ML dependencies
+        run: |
+          cd apps/ml-service
+          pip install -r requirements.txt
+
+      - name: Verify Model Integrity
+        run: |
+          cd apps/ml-service
+          python model/train.py
+
+      - name: Run ML tests
+        run: |
+          cd apps/ml-service
+          python -m pytest tests/ -v
+
   check-contracts:
+    name: Smart Contract Validation (Soroban)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: 'wasm32-unknown-unknown'
-      - run: cd packages/contracts/threat-registry && cargo check
-      - run: cd packages/contracts/reward-token && cargo check
-  
+
+      - name: Verify Threat Registry
+        run: cd packages/contracts/threat-registry && cargo check
+
+      - name: Verify Reward Token
+        run: cd packages/contracts/reward-token && cargo check
+
   deploy-preview:
+    name: Vercel Preview (Frontend)
     if: github.event_name == 'pull_request'
-    needs: lint-test
+    needs: [build-and-test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -51,10 +84,12 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-  
+          working-directory: apps/frontend
+
   deploy-prod:
+    name: Vercel Production (Frontend)
     if: github.ref == 'refs/heads/main'
-    needs: [lint-test, test-ml]
+    needs: [build-and-test, test-ml]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -64,3 +99,5 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: '--prod'
+          working-directory: apps/frontend
+

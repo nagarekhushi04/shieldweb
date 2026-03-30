@@ -100,13 +100,13 @@ Following our Feedback analysis, we have updated the platform with these key imp
 ---
 
 ## 💎 Testnet Users & Validation
-| # | Name | Wallet Address | Status |
-|---|------|---------------|--------|
-| 1 | Khushi Nagare | GDR5EMLQAJUGCPOM5EJPXWFWLGLUSETIKMQUWRGP6JTTU4QM3JGNNTCI | [Verified](https://stellar.expert/explorer/testnet/account/GDR5EMLQAJUGCPOM5EJPXWFWLGLUSETIKMQUWRGP6JTTU4QM3JGNNTCI) |
-| 2 | Abhishek Sharma | GAMJ6WDCWBP52W3RXIUSCORIKJX4FHZJREM2KXSXXPWWRS6BICEY7PTL | [Verified](https://stellar.expert/explorer/testnet/account/GAMJ6WDCWBP52W3RXIUSCORIKJX4FHZJREM2KXSXXPWWRS6BICEY7PTL) |
-| 3 | Priya Singh | GCUZJPP54VJTKBS3TVCVPB6ZF6OZI6IQ66KQQHP52IL262HLHCHNSGER | [Verified](https://stellar.expert/explorer/testnet/account/GCUZJPP54VJTKBS3TVCVPB6ZF6OZI6IQ66KQQHP52IL262HLHCHNSGER) |
-| 4 | Rahul Varma | GDYRSLJEIUOH5CM7M3QJWTLFFN7YLL7HSFW7EPMPK5FIOVSZYTGO44YR | [Verified](https://stellar.expert/explorer/testnet/account/GDYRSLJEIUOH5CM7M3QJWTLFFN7YLL7HSFW7EPMPK5FIOVSZYTGO44YR) |
-| 5 | Sneha Reddy | GB2YXKHESDYPVDF644S6DSNDNDRKG6YATDBQD2VIMO7JDWFNIRAATMNF | [Verified](https://stellar.expert/explorer/testnet/account/GB2YXKHESDYPVDF644S6DSNDNDRKG6YATDBQD2VIMO7JDWFNIRAATMNF) |
+| # | Name | Email | Wallet Address | Status |
+|---|------|-------|----------------|--------|
+| 1 | Khushi Nagare | khushinagare04@gmail.com | GDR5EMLQAJUGCPOM5EJPXWFWLGLUSETIKMQUWRGP6JTTU4QM3JGNNTCI | [Verified](https://stellar.expert/explorer/testnet/account/GDR5EMLQAJUGCPOM5EJPXWFWLGLUSETIKMQUWRGP6JTTU4QM3JGNNTCI) |
+| 2 | Abhishek Sharma | abhishek.sharma.dev@gmail.com | GAMJ6WDCWBP52W3RXIUSCORIKJX4FHZJREM2KXSXXPWWRS6BICEY7PTL | [Verified](https://stellar.expert/explorer/testnet/account/GAMJ6WDCWBP52W3RXIUSCORIKJX4FHZJREM2KXSXXPWWRS6BICEY7PTL) |
+| 3 | Priya Singh | priya.singh.tech@gmail.com | GCUZJPP54VJTKBS3TVCVPB6ZF6OZI6IQ66KQQHP52IL262HLHCHNSGER | [Verified](https://stellar.expert/explorer/testnet/account/GCUZJPP54VJTKBS3TVCVPB6ZF6OZI6IQ66KQQHP52IL262HLHCHNSGER) |
+| 4 | Rahul Varma | rahul.varma.block@gmail.com | GDYRSLJEIUOH5CM7M3QJWTLFFN7YLL7HSFW7EPMPK5FIOVSZYTGO44YR | [Verified](https://stellar.expert/explorer/testnet/account/GDYRSLJEIUOH5CM7M3QJWTLFFN7YLL7HSFW7EPMPK5FIOVSZYTGO44YR) |
+| 5 | Sneha Reddy | sneha.reddy.stellar@gmail.com | GB2YXKHESDYPVDF644S6DSNDNDRKG6YATDBQD2VIMO7JDWFNIRAATMNF | [Verified](https://stellar.expert/explorer/testnet/account/GB2YXKHESDYPVDF644S6DSNDNDRKG6YATDBQD2VIMO7JDWFNIRAATMNF) |
 
 ---
 

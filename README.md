@@ -76,7 +76,7 @@ Full architecture details can be found in [docs/ARCHITECTURE.md](docs/ARCHITECTU
 ## 📝 Requirements for User Onboarding & Feedback
 We have successfully completed one iteration of development based on active user feedback. Our feedback mechanism includes:
 
-1. **User Details & Feedback Form**: [👉 Click here to access the Google Form 👈](https://docs.google.com/forms/d/1CfOjMdzBMQuMMAzFycSlSoD8pdB3SOzvB8DIFde4FpA/edit)
+1. **User Details & Feedback Form**: [👉 Click here to access the Google Form 👈](https://docs.google.com/forms/d/e/1FAIpQLScMRGa5zF0M8r37xYBUwlz1hlrqESELH2mOdjV5Vd4XXQi8SQ/viewform?usp=publish-editor)
    - *This form collects: Wallet Address, Email, Name, and Rating/Product Feedback.*
 2. **Survey Analytics & Excel Sheet**: All responses are exported and recorded in [docs/user_feedback.csv](docs/user_feedback.csv) for analysis.
 3. **Requirement Mapping**:

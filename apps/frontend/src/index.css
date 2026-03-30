@@ -1,3 +1,34 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #0F172A;
+  --color-slate-850: #1E293B;
+  --color-primary-blue: #3B82F6;
+  --color-threat-red: #EF4444;
+  --color-safe-green: #10B981;
+  --color-warning-amber: #F59E0B;
+  
+  --font-sans: "Inter", "system-ui", "sans-serif";
+}
+
+@layer base {
+  body {
+    @apply bg-navy text-white font-sans;
+  }
+}
+
+.glass-card {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-blue to-purple-400;
+}
+
+.input-focus-ring {
+  @apply focus:ring-2 focus:ring-primary-blue/50 transition-all;
+}
+
+.btn-primary {
+  @apply bg-primary-blue hover:bg-blue-600 transition-all;
+}

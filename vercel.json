@@ -2,9 +2,8 @@
   "buildCommand": "npm run build --workspace=apps/frontend",
   "outputDirectory": "apps/frontend/dist",
   "framework": "vite",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
-  "env": {
-    "VITE_API_URL": "@shieldweb3_api_url",
-    "VITE_STELLAR_NETWORK": "testnet"
-  }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://shieldweb3-api.railway.app/api/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }

@@ -1,8 +1,8 @@
 # 🛡️ ShieldWeb3 — Web3 Anti-Phishing Security Layer
 
 ## Live Links
-- Frontend: https://shieldweb3.vercel.app (update after deploy)
-- API: https://shieldweb3-api.railway.app (update after deploy)
+- Frontend: https://shieldweb-frontend-ewi6.vercel.app
+- API: https://shieldweb3-api.railway.app
 - Demo Video: [to be added]
 - Chrome Extension: Download from /releases
 

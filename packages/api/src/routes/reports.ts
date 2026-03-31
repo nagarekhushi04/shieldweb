@@ -5,6 +5,7 @@ import Threat from '../models/Threat';
 import User from '../models/User';
 import { hashUrl, reportThreatOnChain, mintRewardTokens } from '../services/stellarService';
 import { scoreUrl } from '../services/mlService';
+import { io } from '../index';
 
 const router = Router();
 
@@ -49,6 +50,32 @@ router.post('/submit', requireAuth, async (req: AuthRequest, res) => {
         }
 
         await User.updateOne({ walletAddress: req.user.walletAddress }, { $inc: { totalReports: 1 } });
+
+        // Emit to all subscribers
+        io.to('threats:all').emit('threat:new', {
+            domain: threat.domain,
+            threatType: threat.threatType,
+            severity: threat.severity,
+            mlScore: threat.mlScore,
+            timestamp: new Date().toISOString()
+        });
+
+        // Emit to high-severity channel if severity >= 3
+        if (threat.severity >= 3) {
+            io.to('threats:high-severity').emit('threat:critical', {
+                domain: threat.domain,
+                threatType: threat.threatType,
+                severity: threat.severity,
+                message: `CRITICAL: ${threat.domain} flagged as ${threat.threatType}`
+            });
+        }
+
+        // Emit updated stats every 5 new threats
+        const totalCount = await Threat.countDocuments();
+        if (totalCount % 5 === 0) {
+            const verifiedCount = await Threat.countDocuments({ verified: true });
+            io.to('stats:live').emit('stats:update', { totalThreats: totalCount, verifiedThreats: verifiedCount });
+        }
 
         res.json({ reportId: threat._id, mlScore: mlRes.score, txHash });
     } catch (err) {

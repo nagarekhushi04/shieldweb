@@ -4,6 +4,8 @@ import { useThreatStore } from '../store/threatStore';
 import { ThreatChecker } from '../components/ThreatChecker';
 import { WalletConnect } from '../components/WalletConnect';
 import { Shield, Lock, Globe, Zap } from 'lucide-react';
+import { Navbar } from '../components/Navbar';
+import { LiveThreatFeed } from '../components/LiveThreatFeed';
 
 export const HomePage: React.FC = () => {
   const { stats, fetchStats } = useThreatStore();
@@ -14,28 +16,7 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      <nav className="sticky top-0 z-50 glass-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="absolute inset-0 bg-primary-blue blur-xl opacity-20 scale-150" />
-                <Shield className="h-9 w-9 text-primary-blue relative" />
-              </div>
-              <span className="font-bold text-2xl tracking-tight">ShieldWeb3</span>
-            </div>
-            <div className="hidden md:flex gap-8 font-medium">
-              <a href="/" className="hover:text-primary-blue transition-colors">Home</a>
-              <a href="/report" className="hover:text-primary-blue transition-colors">Report</a>
-              <a href="/leaderboard" className="hover:text-primary-blue transition-colors">Leaderboard</a>
-              <a href="/extension" className="hover:text-primary-blue transition-colors">Extension</a>
-            </div>
-            <div className="flex items-center">
-              <WalletConnect />
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="text-center mb-24">
@@ -88,6 +69,10 @@ export const HomePage: React.FC = () => {
             </div>
           </div>
         </motion.div>
+
+        <div className="max-w-xl mx-auto mb-24 cursor-default">
+          <LiveThreatFeed />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24">
           {[{ icon: Lock, title: "On-Chain Security", desc: "Every threat is cryptographically verified and stored on the Stellar ledger." },

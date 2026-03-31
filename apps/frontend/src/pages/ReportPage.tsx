@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { submitReport } from '../lib/api';
 import { toast } from 'react-hot-toast';
 import { useAuthStore } from '../store/authStore';
+import { Navbar } from '../components/Navbar';
 
 export const ReportPage: React.FC = () => {
   const [url, setUrl] = useState('');
@@ -39,7 +40,9 @@ export const ReportPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-navy text-white p-8">
+    <div className="min-h-screen bg-slate-950">
+      <Navbar />
+      <div className="p-8">
       <div className="max-w-2xl mx-auto bg-slate p-8 rounded-xl border border-gray-700">
         <h1 className="text-3xl font-bold mb-6">Report a Threat</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -71,6 +74,7 @@ export const ReportPage: React.FC = () => {
             {isLoading ? 'Submitting...' : 'Submit Report'}
           </button>
         </form>
+      </div>
       </div>
     </div>
   );

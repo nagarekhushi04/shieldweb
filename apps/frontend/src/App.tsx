@@ -6,6 +6,7 @@ import { DashboardPage } from './pages/DashboardPage'
 import { LeaderboardPage } from './pages/LeaderboardPage'
 import { ReportPage } from './pages/ReportPage'
 import { ExtensionPage } from './pages/ExtensionPage'
+import MetricsDashboardPage from './pages/MetricsDashboardPage'
 import { useAuthStore } from './store/authStore'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/report" element={<ReportPage />} />
         <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/extension" element={<ExtensionPage />} />
+        <Route path="/metrics" element={<MetricsDashboardPage />} />
         <Route 
           path="/dashboard" 
           element={

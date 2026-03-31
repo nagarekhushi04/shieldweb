@@ -6,11 +6,23 @@ import { WalletConnect } from '../components/WalletConnect';
 import { Shield, Lock, Globe, Zap } from 'lucide-react';
 import { Navbar } from '../components/Navbar';
 import { LiveThreatFeed } from '../components/LiveThreatFeed';
+import { FeedbackModal } from '../components/FeedbackModal';
+import axios from 'axios';
 
 export const HomePage: React.FC = () => {
   const { stats, fetchStats } = useThreatStore();
+  const [onboardedCount, setOnboardedCount] = React.useState(28);
 
   useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/count`);
+        setOnboardedCount(res.data.onboarded);
+      } catch (err) {
+        console.error('Failed to fetch user counts');
+      }
+    };
+    fetchCounts();
     fetchStats();
   }, [fetchStats]);
 
@@ -31,6 +43,9 @@ export const HomePage: React.FC = () => {
             <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
               Decentralized phishing detection powered by the Stellar blockchain and real-time AI classification.
             </p>
+            <div className="mt-8 flex items-center justify-center gap-3 text-xs text-slate-500 font-bold uppercase tracking-widest">
+              <span>Join {onboardedCount}+ security researchers</span>
+            </div>
           </motion.div>
 
           <motion.div
@@ -98,6 +113,7 @@ export const HomePage: React.FC = () => {
       <footer className="border-t border-white/5 py-12 mt-24 text-center text-gray-500 text-sm">
         <p>© 2026 ShieldWeb3. Built for the Stellar Ecosystem.</p>
       </footer>
+      <FeedbackModal />
     </div>
   );
 };

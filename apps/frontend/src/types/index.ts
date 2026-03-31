@@ -25,6 +25,8 @@ export interface User {
   verifiedReports: number;
   shw3Balance: string;
   reputation: number;
+  isAdmin: boolean;
+  onboardingComplete: boolean;
 }
 
 export interface Report {

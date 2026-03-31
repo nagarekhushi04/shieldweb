@@ -4,7 +4,9 @@ import { requireAuth, AuthRequest } from '../middleware/auth';
 import Threat from '../models/Threat';
 import User from '../models/User';
 import Contribution from '../models/Contribution';
+import Feedback from '../models/Feedback';
 import { redisClient } from '../db';
+import { requireAdmin } from '../middleware/auth';
 
 const router = Router();
 
@@ -21,7 +23,7 @@ router.get('/contributors', async (req, res) => {
             totalReports: u.totalReports,
             verifiedReports: u.verifiedReports,
             shw3Earned: Number(u.shw3Balance).toFixed(2),
-            joinedAt: u.createdAt,
+            joinedAt: u.joinedAt,
             badge: u.verifiedReports > 50 ? 'Guardian' : (u.verifiedReports > 10 ? 'Sentinel' : 'Reporter')
         }));
         
@@ -156,6 +158,59 @@ router.post('/comment/:threatId', requireAuth, async (req: AuthRequest, res) => 
         });
         
         res.json({ comments: threat.comments });
+    } catch {
+        res.status(500).json({ error: 'Error' });
+    }
+});
+
+// POST /api/community/feedback/submit
+router.post('/feedback/submit', requireAuth, async (req: AuthRequest, res) => {
+    try {
+        const { rating, improvement, source, checkerWorked, wouldRecommend, name, email } = req.body;
+        const wallet = req.user.walletAddress;
+        
+        const feedbackKey = `feedback:${wallet}`;
+        const alreadySubmitted = await redisClient.get(feedbackKey);
+        if (alreadySubmitted) return res.status(403).json({ error: 'Feedback already submitted' });
+        
+        await Feedback.create({
+            walletAddress: wallet,
+            name,
+            email,
+            rating,
+            improvement,
+            source,
+            checkerWorked,
+            wouldRecommend
+        });
+        
+        // 24h cooldown to prevent spam, though prompt usually only happens once
+        await redisClient.setEx(feedbackKey, 86400, 'true');
+        
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to submit feedback' });
+    }
+});
+
+// GET /api/community/feedback/summary (admin only)
+router.get('/feedback/summary', requireAuth, requireAdmin, async (req, res) => {
+    try {
+        const stats = await Feedback.aggregate([
+            { $group: {
+                _id: null,
+                avgRating: { $avg: '$rating' },
+                total: { $sum: 1 },
+                ratingDist: { $push: '$rating' }
+            }}
+        ]);
+        
+        const recent = await Feedback.find().sort({ createdAt: -1 }).limit(20).select('improvement rating createdAt');
+        
+        res.json({
+            summary: stats[0] || { avgRating: 0, total: 0 },
+            recentImprovements: recent
+        });
     } catch {
         res.status(500).json({ error: 'Error' });
     }

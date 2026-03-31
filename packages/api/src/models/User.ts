@@ -12,6 +12,7 @@ export interface IUser extends Document {
   joinedAt: Date;
   lastActive: Date;
   isAdmin: boolean;
+  onboardingComplete: boolean;
 }
 
 const UserSchema: Schema = new Schema({
@@ -25,7 +26,8 @@ const UserSchema: Schema = new Schema({
   reputation: { type: Number, default: 100 },
   joinedAt: { type: Date, default: Date.now },
   lastActive: { type: Date },
-  isAdmin: { type: Boolean, default: false }
+  isAdmin: { type: Boolean, default: false },
+  onboardingComplete: { type: Boolean, default: false }
 });
 
 export default mongoose.model<IUser>('User', UserSchema);

@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import Threat from '../models/Threat';
 import User from '../models/User';
+import { requireAuth, requireAdmin } from '../middleware/auth';
 import { monitoring } from '../services/monitoringService';
-import { mongoStatus, redisStatus } from '../db';
+import { mongoStatus, redisStatus, redisClient } from '../db';
 
 const router = Router();
 
@@ -112,6 +113,32 @@ router.get('/leaderboard', async (req, res) => {
         res.json(formatted);
     } catch {
         res.status(500).json({ error: "Error" });
+    }
+});
+
+// GET /api/stats/admin/users
+router.get('/admin/users', requireAuth, requireAdmin, async (req, res) => {
+    try {
+        const { page = 1, limit = 20, search } = req.query;
+        const query: any = {};
+        if (search) {
+            query.$or = [
+                { walletAddress: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } },
+                { name: { $regex: search, $options: 'i' } }
+            ];
+        }
+        
+        const users = await User.find(query)
+            .limit(Number(limit))
+            .skip((Number(page) - 1) * Number(limit))
+            .sort({ joinedAt: -1 });
+            
+        const total = await User.countDocuments(query);
+        
+        res.json({ users, total, pages: Math.ceil(total / Number(limit)) });
+    } catch {
+        res.status(500).json({ error: 'Error' });
     }
 });
 

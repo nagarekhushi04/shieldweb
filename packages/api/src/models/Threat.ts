@@ -15,6 +15,7 @@ export interface IThreat extends Document {
   active: boolean;
   upvotes: number;
   downvotes: number;
+  comments: Array<{ walletAddress: string; content: string; timestamp: Date }>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,7 +37,12 @@ const ThreatSchema: Schema = new Schema({
   verifiedBy: { type: String },
   active: { type: Boolean, default: true },
   upvotes: { type: Number, default: 0 },
-  downvotes: { type: Number, default: 0 }
+  downvotes: { type: Number, default: 0 },
+  comments: [{
+    walletAddress: { type: String },
+    content: { type: String },
+    timestamp: { type: Date, default: Date.now }
+  }]
 }, { timestamps: true });
 
 export default mongoose.model<IThreat>('Threat', ThreatSchema);

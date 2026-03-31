@@ -76,7 +76,7 @@ graph TD
 | # | Name | Wallet Address | Stellar Explorer Link |
 |---|------|----------------|-----------------------|
 | 1 | Khushi Nagare | `GANY...WXD6` | [Explorer](https://stellar.expert/explorer/testnet/account/GANYZ35IZDDYJG46ED4FSYYVUG3BUHG7STODEPPNU7RJ3BWTWVXD6QKU) |
-| 2 | Shantanu Udhane | `GCNH...TBSU` | [Explorer](https://stellar.expert/explorer/testnet/account/GCNHSCGCWZZ3W5ETWZENPWORQIHTEPCB57OR52XK3MDVF53FSGGETBSU) |
+| 2 | Shantanu Udhane | `GBWLOBHV7FFAPQVC7OCZJZEYEW6MZQ77RNUEG7J7GDOOJQKW3E3XYF7W` | [Explorer](https://stellar.expert/explorer/testnet/account/GBWLOBHV7FFAPQVC7OCZJZEYEW6MZQ77RNUEG7J7GDOOJQKW3E3XYF7W) |
 | 3-29 | *Listed in Detail* | *30+ Defenders* | [View Full List](#detailed-testnet-feedback) |
 | 30-220 | *Researcher Network* | *200+ Active* | [Admin Dashboard](https://shieldweb3.vercel.app/admin) |
 

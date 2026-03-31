@@ -4,18 +4,23 @@ import { checkUrl, getGlobalStats } from '../lib/api';
 
 interface ThreatState {
   recentChecks: ThreatCheckResult[];
+  threats: any[];
   isChecking: boolean;
   lastResult: ThreatCheckResult | null;
   stats: GlobalStats | null;
+  onboardedCount: string;
   check: (url: string) => Promise<ThreatCheckResult>;
   fetchStats: () => Promise<void>;
+  setThreats: (threats: any[]) => void;
 }
 
 export const useThreatStore = create<ThreatState>((set) => ({
   recentChecks: [],
+  threats: [],
   isChecking: false,
   lastResult: null,
   stats: null,
+  onboardedCount: '0',
 
   check: async (url: string) => {
     set({ isChecking: true, lastResult: null });
@@ -37,9 +42,14 @@ export const useThreatStore = create<ThreatState>((set) => ({
   fetchStats: async () => {
     try {
       const stats = await getGlobalStats();
-      set({ stats });
+      set({ 
+        stats, 
+        onboardedCount: stats.totalReporters.toString() 
+      });
     } catch (error) {
       console.error('Failed to fetch stats', error);
     }
-  }
+  },
+
+  setThreats: (threats: any[]) => set({ threats })
 }));

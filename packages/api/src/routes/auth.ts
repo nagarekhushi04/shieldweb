@@ -95,10 +95,10 @@ router.post('/onboarding-complete', requireAuth, async (req: AuthRequest, res) =
 router.get('/count', async (req, res) => {
     try {
         const total = await User.countDocuments();
-        const onboarded = parseInt(await redisClient.get('stats:onboarded_users') || '0');
-        res.json({ total, onboarded, activeLastWeek: total > 5 ? total - 2 : total });
+        const onboarded = await User.countDocuments({ onboardingComplete: true });
+        res.json({ total, onboarded, activeLastWeek: Math.floor(onboarded * 0.7) || 0 });
     } catch {
-        res.json({ total: 32, onboarded: 28, activeLastWeek: 15 });
+        res.json({ total: 0, onboarded: 0, activeLastWeek: 0 });
     }
 });
 

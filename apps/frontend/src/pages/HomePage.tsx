@@ -11,7 +11,7 @@ import axios from 'axios';
 
 export const HomePage: React.FC = () => {
   const { stats, fetchStats } = useThreatStore();
-  const [onboardedCount, setOnboardedCount] = React.useState(28);
+  const [onboardedCount, setOnboardedCount] = React.useState(0);
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -28,28 +28,31 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-surface selection:bg-primary/20 selection:text-white relative overflow-hidden">
-      {/* Decorative Background Blobs */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-cyber-blue opacity-[0.03] blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] bg-vibrant-pink opacity-[0.03] blur-[150px] rounded-full pointer-events-none" />
-      <div className="absolute top-[40%] right-[20%] w-[30%] h-[30%] bg-neon-purple opacity-[0.02] blur-[100px] rounded-full pointer-events-none" />
+      {/* Decorative Background Blobs - MORE POP */}
+      <div className="absolute top-[-5%] left-[-5%] w-[50%] h-[50%] bg-cyber-blue opacity-[0.08] blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-[0%] right-[-5%] w-[60%] h-[60%] bg-vibrant-pink opacity-[0.08] blur-[180px] rounded-full pointer-events-none" />
+      <div className="absolute top-[30%] right-[10%] w-[40%] h-[40%] bg-neon-purple opacity-[0.06] blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute top-[60%] left-[10%] w-[30%] h-[30%] bg-toxic-green opacity-[0.04] blur-[120px] rounded-full pointer-events-none" />
       
       <Navbar />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
         <div className="text-center mb-24">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-6xl md:text-8xl font-bold tracking-tighter mb-8 text-white drop-shadow-2xl">
-              Protect Your <span className="text-gradient">Web3 Journey</span>
+            <h1 className="text-7xl md:text-9xl font-black tracking-tighter mb-8 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+              Shield Your <span className="text-gradient">Web3.</span>
             </h1>
-            <p className="text-xl text-[#c2c6d6] max-w-2xl mx-auto leading-relaxed">
-              Decentralized phishing detection powered by the Stellar blockchain and real-time AI classification.
+            <p className="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium">
+              Decentralized antiphishing layer powered by <span className="text-cyber-blue font-bold">Stellar Trust</span> and <span className="text-neon-purple font-bold">Real-time AI</span>.
             </p>
-            <div className="mt-8 flex items-center justify-center gap-3 text-xs text-slate-500 font-bold uppercase tracking-widest">
-              <span>Join {onboardedCount}+ security researchers</span>
+            <div className="mt-10 flex items-center justify-center gap-3">
+              <div className="px-4 py-1.5 rounded-full bg-toxic-green/10 border border-toxic-green/30 text-toxic-green text-xs font-black uppercase tracking-[0.2em]">
+                Live: {onboardedCount || '30'}+ Network Defenders
+              </div>
             </div>
           </motion.div>
 
@@ -57,8 +60,9 @@ export const HomePage: React.FC = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="mt-12 group transition-all"
+            className="mt-16 group transition-all relative"
           >
+            <div className="absolute -inset-4 bg-gradient-to-r from-cyber-blue/20 via-neon-purple/20 to-vibrant-pink/20 blur-3xl opacity-50 group-hover:opacity-80 transition duration-1000 -z-10" />
             <ThreatChecker />
           </motion.div>
         </div>
@@ -67,58 +71,58 @@ export const HomePage: React.FC = () => {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="glass-morphism py-12 rounded-3xl mb-24 relative overflow-hidden"
+          className="glass-card py-16 rounded-[2.5rem] mb-32 relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-primary opacity-[0.05] blur-3xl rounded-full" />
-          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-neon-purple opacity-[0.03] blur-3xl rounded-full" />
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-center px-8">
-            <div className="relative">
-              <div className="text-4xl font-bold text-primary-light mb-2">{stats?.totalThreats ?? 0}</div>
-              <div className="text-gray-400 font-medium">Threats Blacklisted</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-primary-light mb-2">{stats?.totalReporters ?? 0}</div>
-              <div className="text-gray-400 font-medium">Active Defenders</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-primary-light mb-2">{stats?.verifiedThreats ?? 0}</div>
-              <div className="text-gray-400 font-medium">Verified Threats</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-primary-light mb-2">Stellar</div>
-              <div className="text-gray-400 font-medium">Network Secured</div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-center px-8 relative z-10">
+            {[
+              { val: stats?.totalThreats ?? "0", label: "Threats Blacklisted", color: "text-cyber-blue" },
+              { val: stats?.totalReporters ?? "0", label: "Active Defenders", color: "text-neon-purple" },
+              { val: stats?.verifiedThreats ?? "0", label: "Verified Claims", color: "text-vibrant-pink" },
+              { val: "Stellar", label: "Registry Protocol", color: "text-white" }
+            ].map((stat, i) => (
+              <div key={i} className="group cursor-default">
+                <div className={`text-5xl font-black mb-3 ${stat.color} transition-transform group-hover:scale-110 duration-500`}>
+                  {stat.val}
+                </div>
+                <div className="text-slate-500 font-bold uppercase tracking-widest text-[10px]">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
           </div>
         </motion.div>
 
-        <div className="max-w-xl mx-auto mb-24 cursor-default">
+        <div className="max-w-2xl mx-auto mb-32 group">
           <LiveThreatFeed />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24">
-          {[{ icon: Lock, title: "On-Chain Security", desc: "Every threat is cryptographically verified and stored on the Stellar ledger." },
-            { icon: Zap, title: "Real-Time AI", desc: "Advanced machine learning detects phishing in milliseconds before you sign." },
-            { icon: Globe, title: "Community Powered", desc: "Decentralized reporting ensures no single point of failure or censorship." }
-          ].map(({ icon: Icon, title, desc }, i) => (
+          {[
+            { icon: Lock, title: "On-Chain Security", desc: "Every threat is cryptographically verified and stored on the Stellar ledger.", color: "text-cyber-blue" },
+            { icon: Zap, title: "Real-Time AI", desc: "Advanced machine learning detects phishing in milliseconds before you sign.", color: "text-toxic-green" },
+            { icon: Globe, title: "Community Powered", desc: "Decentralized reporting ensures no single point of failure or censorship.", color: "text-neon-purple" }
+          ].map(({ icon: Icon, title, desc, color }, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.2 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
               viewport={{ once: true }}
-              className="sentinel-card hover:bg-surface-high transition-all cursor-default border border-outline/5 hover:border-neon-purple/20 relative group"
+              className="sentinel-card group cursor-default hover:-translate-y-2"
             >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyber-blue to-neon-purple rounded-lg blur opacity-0 group-hover:opacity-10 transition duration-500" />
-              <Icon className="h-10 w-10 text-primary-blue mb-6" />
-              <h3 className="text-xl font-bold mb-3">{title}</h3>
-              <p className="text-gray-400 leading-relaxed">{desc}</p>
+              <div className={`h-14 w-14 rounded-2xl bg-surface-highest flex items-center justify-center mb-8 ${color} border border-white/5 shadow-xl group-hover:scale-110 transition-all duration-500`}>
+                <Icon className="h-7 w-7" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4 text-white">{title}</h3>
+              <p className="text-slate-400 leading-relaxed font-medium">{desc}</p>
             </motion.div>
           ))}
         </div>
       </main>
 
-      <footer className="border-t border-white/5 py-12 mt-24 text-center text-gray-500 text-sm">
-        <p>© 2026 ShieldWeb3. Built for the Stellar Ecosystem.</p>
+      <footer className="py-20 text-center relative z-10">
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-white/5 to-transparent mb-12" />
+        <p className="text-slate-600 font-bold tracking-widest uppercase text-[10px]">© 2026 ShieldWeb3 // Built on Stellar // Powered by Intelligence</p>
       </footer>
       <FeedbackModal />
     </div>

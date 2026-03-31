@@ -49,8 +49,8 @@ export const OnboardingPage: React.FC = () => {
 
     const completeOnboarding = async () => {
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/users/onboarding-complete`, {}, {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/onboarding-complete`, {}, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('shieldweb3_token')}` }
             });
             localStorage.setItem('onboardingComplete', 'true');
             confetti({

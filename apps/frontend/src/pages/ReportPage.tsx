@@ -42,36 +42,59 @@ export const ReportPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-surface">
       <Navbar />
-      <div className="p-8">
-      <div className="max-w-2xl mx-auto sentinel-section border border-outline">
-        <h1 className="text-3xl font-bold mb-6">Report a Threat</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div>
-            <label className="block text-sm text-gray-400 mb-1">URL</label>
-            <input required type="url" value={url} onChange={e => setUrl(e.target.value)} className="input-sentinel w-full" placeholder="https://malicious-site.com" />
+      <div className="p-8 pt-24">
+      <div className="max-w-2xl mx-auto sentinel-section border border-outline bg-surface-low/50 backdrop-blur-md">
+        <h1 className="text-3xl font-black text-white mb-6 uppercase tracking-tighter">Secure Threat Reporting</h1>
+        
+        {!isConnected && (
+          <div className="mb-8 p-6 bg-cyber-blue/10 border border-cyber-blue/20 rounded-2xl flex flex-col gap-4 text-center">
+             <p className="text-cyber-blue font-bold text-sm">You must connect your Stellar wallet to submit security reports and earn SHW3 rewards.</p>
+             <button onClick={() => window.location.href = '/'} className="btn-sentinel-primary mx-auto">Go to Dashboard to Connect</button>
           </div>
-          <div>
-            <label className="block text-sm text-gray-400 mb-1">Threat Type</label>
-            <select value={threatType} onChange={e => setThreatType(e.target.value)} className="input-sentinel w-full">
-              <option value="phishing">Phishing</option>
-              <option value="scam">Scam</option>
-              <option value="malware">Malware</option>
-              <option value="rug_pull">Rug Pull</option>
-              <option value="fake_wallet">Fake Wallet</option>
-              <option value="other">Other</option>
-            </select>
+        )}
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          <div className="space-y-2">
+            <label className="text-xs font-black uppercase tracking-widest text-slate-500">Target Vulnerable URL</label>
+            <input required type="url" value={url} onChange={e => setUrl(e.target.value)} className="input-sentinel w-full text-lg" placeholder="https://stellar-scam-site.com" />
           </div>
-          <div>
-            <label className="block text-sm text-gray-400 mb-1">Severity (1-4)</label>
-            <input type="range" min="1" max="4" value={severity} onChange={e => setSeverity(parseInt(e.target.value))} className="w-full" />
-            <div className="text-right text-xs text-gray-400">Level: {severity}</div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-xs font-black uppercase tracking-widest text-slate-500">Classification</label>
+              <select value={threatType} onChange={e => setThreatType(e.target.value)} className="input-sentinel w-full">
+                <option value="phishing">Phishing Attack</option>
+                <option value="scam">Direct Scam</option>
+                <option value="malware">Malicious Payload</option>
+                <option value="rug_pull">Potential Rug Pull</option>
+                <option value="fake_wallet">Fake Wallet UI</option>
+                <option value="other">Other Suspicious Activity</option>
+              </select>
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-xs font-black uppercase tracking-widest text-slate-500">Severity Level: {severity}</label>
+              <input type="range" min="1" max="4" value={severity} onChange={e => setSeverity(parseInt(e.target.value))} className="w-full accent-cyber-blue" />
+              <div className="flex justify-between text-[10px] text-slate-600 font-bold uppercase">
+                <span>Low</span>
+                <span>Critical</span>
+              </div>
+            </div>
           </div>
-          <div>
-            <label className="block text-sm text-gray-400 mb-1">Description</label>
-            <textarea value={description} onChange={e => setDescription(e.target.value)} className="input-sentinel w-full h-24" placeholder="How does this scam operate?" />
+
+          <div className="space-y-2">
+            <label className="text-xs font-black uppercase tracking-widest text-slate-500">Incident Details</label>
+            <textarea value={description} onChange={e => setDescription(e.target.value)} className="input-sentinel w-full h-32" placeholder="Describe the threat vectors and behavior..." />
           </div>
-          <button disabled={isLoading} type="submit" className="w-full bg-primary-blue hover:bg-blue-600 disabled:opacity-50 text-white font-bold p-3 rounded-lg mt-4 transition-colors">
-            {isLoading ? 'Submitting...' : 'Submit Report'}
+
+          <button 
+            disabled={isLoading || !isConnected} 
+            type="submit" 
+            className={`w-full font-black p-5 rounded-2xl mt-4 transition-all text-lg shadow-xl ${
+              !isConnected ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-outline' : 'btn-sentinel-primary hover:scale-[1.02]'
+            }`}
+          >
+            {isLoading ? 'Encrypting & Submitting...' : !isConnected ? 'LOCKED: Connect Wallet First' : 'Broadcast to Network'}
           </button>
         </form>
       </div>

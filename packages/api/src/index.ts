@@ -113,27 +113,27 @@ app.use((req, res, next) => {
 });
 
 const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 10,
-    message: { error: 'Too many auth attempts, try again in 15 minutes' },
+    windowMs: 1 * 60 * 1000,
+    max: 100,
+    message: { error: 'Too many auth attempts' },
     standardHeaders: true
 });
 
 const checkLimiter = rateLimit({
     windowMs: 1 * 60 * 1000,
-    max: 60,
+    max: 200,
     message: { error: 'Rate limit exceeded for URL checks' }
 });
 
 const reportLimiter = rateLimit({
-    windowMs: 60 * 60 * 1000,
-    max: 20,
-    message: { error: 'Max 20 reports per hour per IP' }
+    windowMs: 1 * 60 * 1000,
+    max: 50,
+    message: { error: 'Max 50 reports per minute per IP' }
 });
 
 const globalLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 300
+    windowMs: 1 * 60 * 1000,
+    max: 1000
 });
 
 const speedLimiter = slowDown({
@@ -218,3 +218,4 @@ httpServer.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     startDigestScheduler();
 });
+

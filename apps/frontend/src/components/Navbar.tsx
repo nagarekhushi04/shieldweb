@@ -1,7 +1,7 @@
 import React from 'react';
 import { Shield } from 'lucide-react';
 import { WalletConnect } from './WalletConnect';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
@@ -24,13 +24,13 @@ export const Navbar: React.FC = () => {
               <div className="absolute inset-0 bg-primary-blue blur-xl opacity-20 scale-150" />
               <Shield className="h-9 w-9 text-primary-blue relative" />
             </div>
-            <a href="/" className="font-bold text-2xl tracking-tight text-white hover:text-white decoration-0 no-underline">ShieldWeb3</a>
+            <Link to="/" className="font-bold text-2xl tracking-tight text-white hover:text-white decoration-0 no-underline">ShieldWeb3</Link>
           </div>
           <div className="hidden md:flex gap-8 font-medium">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.path}
+                to={link.path}
                 className={`${
                   location.pathname === link.path 
                     ? 'text-primary-blue' 
@@ -38,7 +38,7 @@ export const Navbar: React.FC = () => {
                 } transition-colors no-underline`}
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </div>
           <div className="flex items-center">

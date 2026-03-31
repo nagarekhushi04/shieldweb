@@ -6,7 +6,7 @@
 
 ### *Decentralized Anti-Phishing & Real-Time Security Layer*
 
-[![Vercel](https://img.shields.io/badge/Vercel-Live-success?style=for-the-badge&logo=vercel)](https://shieldweb3.vercel.app)
+[![Vercel](https://img.shields.io/badge/Vercel-Live-success?style=for-the-badge&logo=vercel)](https://shieldweb-frontend.vercel.app)
 [![Stellar](https://img.shields.io/badge/Stellar-Soroban-7B3FE4?style=for-the-badge&logo=stellar)](https://stellar.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Commits](https://img.shields.io/badge/Commits-37+-blueviolet?style=for-the-badge)](https://github.com/nagarekhushi04/shieldweb/commits/main)
@@ -15,7 +15,7 @@
 
 **ShieldWeb3** is a premium, decentralized phishing protection layer designed to secure the Web3 ecosystem. By bridging real-time **AI detection** with the cryptographic transparency of the **Stellar blockchain**, we provide a zero-trust architecture for the modern web.
 
-[Live Demo](https://shieldweb3.vercel.app) • [API Specs](docs/API.md) • [Architecture](docs/ARCHITECTURE.md) • [User Guide](docs/USER_GUIDE.md)
+[Live Demo](https://shieldweb-frontend.vercel.app) • [API Specs](docs/API.md) • [Architecture](docs/ARCHITECTURE.md) • [User Guide](docs/USER_GUIDE.md)
 
 </div>
 
@@ -78,7 +78,7 @@ graph TD
 | 1 | Khushi Nagare | `GANY...WXD6` | [Explorer](https://stellar.expert/explorer/testnet/account/GANYZ35IZDDYJG46ED4FSYYVUG3BUHG7STODEPPNU7RJ3BWTWVXD6QKU) |
 | 2 | Shantanu Udhane | `GBWLOBHV7FFAPQVC7OCZJZEYEW6MZQ77RNUEG7J7GDOOJQKW3E3XYF7W` | [Explorer](https://stellar.expert/explorer/testnet/account/GBWLOBHV7FFAPQVC7OCZJZEYEW6MZQ77RNUEG7J7GDOOJQKW3E3XYF7W) |
 | 3-29 | *Listed in Detail* | *30+ Defenders* | [View Full List](#detailed-testnet-feedback) |
-| 30-220 | *Researcher Network* | *200+ Active* | [Admin Dashboard](https://shieldweb3.vercel.app/admin) |
+| 30-220 | *Researcher Network* | *200+ Active* | [Admin Dashboard](https://shieldweb-frontend.vercel.app/admin) |
 
 ---
 
@@ -159,7 +159,7 @@ When a suspicious URL is detected, ShieldWeb3 triggers a dual-path validation:
 ## 🧪 User Beta Feedback
 
 <details id="detailed-testnet-feedback">
-<summary><b>View All 30+ Shuffled User Reviews</b></summary>
+<summary><b>View All 30+ User Reviews</b></summary>
 
 | Name | Rating | Feedback |
 |------|--------|----------|

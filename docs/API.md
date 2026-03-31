@@ -1,130 +1,112 @@
-# ShieldWeb3 API Reference
+# ShieldWeb3 API Documentation 🛡️
 
-Base URL: `https://shieldweb3-api.railway.app`
+## 🔐 Authentication
+ShieldWeb3 uses a **Challenge-Verify** flow with Stellar wallet signatures (Freighter) and JWT.
 
-## Authentication Flow Sequence
-```text
-Client (Wallet)               ShieldWeb3 API                 Stellar 
-      |                             |                           |
-      |-- 1. POST /auth/challenge ->|                           |
-      |<- 2. Returns Challenge -----|                           |
-      |                             |                           |
-      |-- 3. User signs Challenge   |                           |
-      |                             |                           |
-      |-- 4. POST /auth/verify ---->|                           |
-      |      (Contains Signature)   |-- 5. Verify Signature --->|
-      |                             |<--------------------------|
-      |<- 6. Returns JWT & User ----|                           |
+### Sequence Diagram
+```mermaid
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant API
+    participant Redis
+    participant Ledger
+
+    User->>Frontend: Connect Wallet
+    Frontend->>API: GET /api/auth/challenge (walletAddress)
+    API->>Redis: SETEX challenge:<addr> 300 <token>
+    API->>Frontend: Return challenge
+    Frontend->>User: Sign challenge with Freighter
+    User->>Frontend: Return signature
+    Frontend->>API: POST /api/auth/verify (addr, sig, challenge)
+    API->>Redis: GET challenge:<addr>
+    API->>Ledger: Verify Signature (Keypair.verify)
+    API->>API: Sign JWT (HS256)
+    API->>Frontend: Return JWT + User Profile
 ```
 
-## Endpoints
+## 🚀 Endpoints
 
-### 1. Check a URL
-Determines if a URL is a known threat or performs a real-time ML score calculation.
+### Authentication
+#### `POST /api/auth/challenge`
+- **Body**: `{ walletAddress: string }`
+- **Returns**: `{ challenge: string, expiresAt: number }`
 
-- **URL:** `/api/threats/check`
-- **Method:** `GET`
-- **Auth required:** No
-- **Query Params:** `url` (string, required)
+#### `POST /api/auth/verify`
+- **Body**: `{ walletAddress: string, signature: string, challenge: string }`
+- **Returns**: `{ token: string, user: IUser }`
 
-**Example Request:**
-```http
-GET /api/threats/check?url=https://stellar.org HTTP/1.1
-```
+### Threat Intelligence
+#### `GET /api/threats/check?url=[url]`
+- **Auth**: None
+- **Returns**: `{ safe: boolean, threat: IThreat | null, mlScore: number, source: 'ml'|'db' }`
 
-**Example Response:**
+#### `POST /api/threats/bulk-check`
+- **Auth**: None
+- **Body**: `{ urls: string[] }` (Max 20)
+- **Returns**: `{ results: Array<{ url, target, error? }> }`
+
+### Reporting
+#### `POST /api/reports/submit`
+- **Auth**: **JWT Required**
+- **Schema**:
 ```json
 {
-  "safe": true,
-  "threat": null,
-  "mlScore": 12,
-  "source": "AI_SCAN"
+  "url": "https://suspicious.com",
+  "threatType": "phishing",
+  "severity": 3,
+  "description": "Optional details",
+  "evidence": "Optional URL"
 }
 ```
+- **Returns**: `{ reportId: string, mlScore: number, txHash: string }`
 
-### 2. Get Auth Challenge
-Retrieves a randomly generated server challenge for the wallet to sign.
+### Community & Feedback
+#### `GET /api/community/feed`
+- **Auth**: None
+- **Returns**: Last 50 threat activity entries.
 
-- **URL:** `/api/auth/challenge`
-- **Method:** `POST`
-- **Auth required:** No
-- **Body:**
-```json
-{
-  "walletAddress": "GABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-}
+#### `POST /api/community/vote/:threatId`
+- **Auth**: **JWT Required**
+- **Body**: `{ vote: 'up' | 'down' }`
+- **Rate Limit**: One vote per wallet per threat.
+
+#### `POST /api/community/feedback/submit`
+- **Auth**: **JWT Required**
+- **Rate Limit**: 1 per wallet per 24h.
+
+## 🕒 Rate Limits
+| Route | Limit | Window |
+|-------|-------|--------|
+| Global | 300 calls | 15 mins |
+| `/api/auth/*` | 10 calls | 15 mins |
+| `/api/threats/check` | 60 calls | 1 min |
+| `/api/reports/submit` | 20 calls | 1 hour |
+
+## 📡 WebSocket Events
+Connect to `ws://[api-url]`
+- **Subscribe**: `emit('subscribe:threats', { type: 'all' })`
+- **Receive**: `on('threat:update', (data) => ...)`
+- **Live Stats**: `on('stats:update', (stats) => ...)`
+
+## 💻 SDK Examples
+
+### JavaScript (fetch)
+```javascript
+const response = await fetch('https://shieldweb3.api/check?url=' + targetUrl);
+const { safe, mlScore } = await response.json();
+if (!safe) warnUser();
 ```
 
-**Example Response:**
-```json
-{
-  "challenge": "shw3-auth-9f8e7d...1a2b3c",
-  "expiresAt": 1678886400000
-}
+### Python
+```python
+import requests
+res = requests.get("https://shieldweb3.api/check", params={"url": "https://..."})
+print(res.json()['safe'])
 ```
 
-### 3. Verify Auth Signature
-Verifies a signed challenge payload and returns a session JWT.
-
-- **URL:** `/api/auth/verify`
-- **Method:** `POST`
-- **Auth required:** No
-- **Body:**
-```json
-{
-  "walletAddress": "GABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
-  "signature": "base64_encoded_signature_string",
-  "challenge": "shw3-auth-9f8e7d...1a2b3c"
-}
-```
-
-**Example Response:**
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR...",
-  "user": {
-    "walletAddress": "GABC...",
-    "shw3Balance": "45.00",
-    "reputation": 85
-  }
-}
-```
-
-### 4. Submit Threat Report
-Allows a registered user to submit a URL as a verified threat. 
-
-- **URL:** `/api/reports/submit`
-- **Method:** `POST`
-- **Auth required:** Yes (Bearer JWT)
-- **Body:**
-```json
-{
-  "url": "http://scam-site.xyz",
-  "threatType": "Phishing",
-  "severity": 4,
-  "description": "Fake wallet drainer",
-  "evidence": "http://imgur.com/screenshot.jpg"
-}
-```
-
-**Example Response:**
-```json
-{
-  "reportId": "rep_5f8a9b...",
-  "mlScore": 92,
-  "txHash": null
-}
-```
-
-## Error Codes
-| Status Code | Code String | Description |
-|-------------|------------|-------------|
-| 400 | `BAD_REQUEST` | Invalid input payload or missing URL |
-| 401 | `UNAUTHORIZED` | Missing, invalid, or expired JWT |
-| 403 | `FORBIDDEN` | Valid token but unauthorized action |
-| 429 | `RATE_LIMITED` | Too many requests (Limit: 100/min) |
-| 500 | `INTERNAL_SERVER_ERROR` | Unknown system failure |
-
-## Rate Limiting
-- **Global:** 100 requests per IP per minute.
-- **Reporting:** 10 reports per user per hour to prevent spam.
+## ❌ Error Codes
+- `401`: Unauthorized (Invalid or expired JWT)
+- `403`: Forbidden (Already voted or insufficient permissions)
+- `429`: Too Many Requests (Rate limit triggered)
+- `400`: Bad Request (Invalid Zod validation)

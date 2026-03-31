@@ -156,5 +156,46 @@ When a suspicious URL is detected, ShieldWeb3 triggers a dual-path validation:
 
 ---
 
+## 🧪 User Beta Feedback
+
+<details id="detailed-testnet-feedback">
+<summary><b>View All 30+ Shuffled User Reviews</b></summary>
+
+| Name | Rating | Feedback |
+|------|--------|----------|
+| Vedang Bahirat | ⭐⭐⭐⭐⭐ | Easy onboarding and robust functionality. |
+| Aravind Deshmukh | ⭐⭐⭐⭐⭐ | Stellar escrow saves merchants from scams. UI is very intuitive. |
+| Vedant Pathak | ⭐⭐⭐⭐ | The UI is clean and it works perfectly. |
+| DC Nishit Bhalerao | ⭐⭐⭐⭐⭐ | Very secure platform, love it! |
+| Akshaya Awasthy | ⭐⭐⭐⭐⭐ | Instant finality and accurate dispute resolution. The best escrow for WhatsApp. |
+| Thanchan Bhumij | ⭐⭐⭐⭐⭐ | The application is good just focused on user-boarding |
+| Neel pote | ⭐⭐⭐⭐ | the ux was good the colors were also nicely implemented |
+| Rajesh Das | ⭐⭐⭐⭐⭐ | AI Shield provides incredible deal security. The gasless feature is a game changer. |
+| Shantanu Udhane | ⭐⭐⭐⭐⭐ | perfect integration and ui layout |
+| Rajas Badade | ⭐⭐⭐⭐⭐ | Smooth process from start to finish. |
+| Sharayu Deogaonkar | ⭐⭐⭐⭐⭐ | Highly recommended for online deals. |
+| Mrunal Ghorpade | ⭐⭐⭐⭐⭐ | No suggestion excellet ui and integration |
+| Aniket Bhilare | ⭐⭐⭐⭐⭐ | Awesome tool, very fast and efficient. |
+| Aditya Shisodiya | ⭐⭐⭐⭐ | Update db and user interface for users update it with users feedback |
+| Omkar nanavare | ⭐⭐⭐⭐⭐ | Excellent UI and Functionality  |
+| Sunita Agarwal | ⭐⭐⭐⭐ | Giving buyers confidence in shop purchases. Would love to see more fiat options. |
+| Vedang Bahirat | ⭐⭐⭐⭐⭐ | Love the gasless transactions. |
+| Nishit Bhalerao | ⭐⭐⭐⭐⭐ | Great secure escrow service! I feel safe doing transactions. |
+| Ayyush gaikwad | ⭐⭐⭐⭐⭐ | Smooth process overall. |
+| Sudhir Bhalerao | ⭐⭐⭐⭐ | Works as expected, great integration. |
+| Sneha Pathak | ⭐⭐⭐⭐ | Smooth UI feels like regular checkout. Very fast transactions. |
+| Yogesh Nagare | ⭐⭐⭐⭐ | Works well, nice escrow. |
+| Vaibhavi Agale | ⭐⭐⭐⭐⭐ | I loved the smooth interface and overall features. App is easy to use. |
+| yash annadate | ⭐⭐⭐⭐⭐ | its overall good but expand the users.. |
+| Asha Kumbhar | ⭐⭐⭐⭐ | Good idea, looking forward to new features. |
+| Khushi Nagare | ⭐⭐⭐⭐⭐ | the application is perfect just need to improve the buttons intergrity |
+| Harshal Jagdale | ⭐⭐⭐⭐⭐ | Amazing ui just need to improve on internal dashboard settings |
+| Druves Dongre | ⭐⭐⭐⭐⭐ | Great interface! |
+| Tanmay tadd | ⭐⭐⭐⭐⭐ | very good problem solving application |
+
+</details>
+
+---
+
 ## 📄 License
 MIT © [Khushi Nagare](https://github.com/nagarekhushi04)

@@ -4,6 +4,9 @@ import { Server } from 'socket.io';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import slowDown from 'express-slow-down';
+import mongoSanitize from 'express-mongo-sanitize';
+import xss from 'xss-clean';
 import authRoutes from './routes/auth';
 import threatRoutes from './routes/threats';
 import reportRoutes from './routes/reports';
@@ -32,9 +35,44 @@ export { io };
 
 const PORT = process.env.PORT || 4000;
 
-app.use(helmet());
-app.use(cors());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'"],
+            styleSrc: ["'self'", "'unsafe-inline'"],
+            imgSrc: ["'self'", "data:", "https:"],
+            connectSrc: ["'self'", "https://soroban-testnet.stellar.org", "https://horizon-testnet.stellar.org"]
+        }
+    },
+    hsts: { maxAge: 31536000, includeSubDomains: true },
+    noSniff: true,
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
+}));
+
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    'https://shieldweb3.vercel.app',
+    'http://localhost:5173',
+    'chrome-extension://'
+].filter(Boolean);
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        const allowed = allowedOrigins.some(o => origin.startsWith(o!));
+        if (allowed) return callback(null, true);
+        callback(new Error(`CORS: origin ${origin} not allowed`));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    maxAge: 86400
+}));
+
 app.use(express.json({ limit: '10kb' }));
+app.use(mongoSanitize());
+app.use(xss());
 
 // Monitoring Middleware
 app.use((req, res, next) => {
@@ -45,13 +83,42 @@ app.use((req, res, next) => {
     next();
 });
 
-const limiter = rateLimit({
+const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 100,
-    standardHeaders: true,
-    legacyHeaders: false,
+    max: 10,
+    message: { error: 'Too many auth attempts, try again in 15 minutes' },
+    standardHeaders: true
 });
-app.use('/api', limiter);
+
+const checkLimiter = rateLimit({
+    windowMs: 1 * 60 * 1000,
+    max: 60,
+    message: { error: 'Rate limit exceeded for URL checks' }
+});
+
+const reportLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 20,
+    message: { error: 'Max 20 reports per hour per IP' }
+});
+
+const globalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 300
+});
+
+const speedLimiter = slowDown({
+    windowMs: 15 * 60 * 1000,
+    delayAfter: 100,
+    delayMs: (used) => (used - 100) * 50
+});
+
+app.use('/api', globalLimiter);
+app.use('/api', speedLimiter);
+
+app.use('/api/auth', authLimiter);
+app.use('/api/threats/check', checkLimiter);
+app.use('/api/reports/submit', reportLimiter);
 
 
 

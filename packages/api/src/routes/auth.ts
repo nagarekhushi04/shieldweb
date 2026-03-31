@@ -1,15 +1,15 @@
 import { Router } from 'express';
 import { redisClient } from '../db';
 import * as StellarSdk from '@stellar/stellar-sdk';
-import jwt from 'jsonwebtoken';
+import { issueToken } from '../middleware/auth';
 import User from '../models/User';
+import { validate, challengeSchema, verifySchema } from '../validators';
 
 const router = Router();
 
-router.post('/challenge', async (req, res) => {
+router.post('/challenge', validate(challengeSchema), async (req, res) => {
     try {
         const { walletAddress } = req.body;
-        if (!walletAddress) return res.status(400).json({ error: 'Missing walletAddress' });
         
         const challenge = `ShieldWeb3-${walletAddress}-${Date.now()}`;
         await redisClient.setEx(`challenge:${walletAddress}`, 300, challenge);
@@ -20,10 +20,9 @@ router.post('/challenge', async (req, res) => {
     }
 });
 
-router.post('/verify', async (req, res) => {
+router.post('/verify', validate(verifySchema), async (req, res) => {
     try {
         const { walletAddress, signature, challenge } = req.body;
-        if (!walletAddress || !signature || !challenge) return res.status(400).json({ error: 'Missing fields' });
         
         const storedChallenge = await redisClient.get(`challenge:${walletAddress}`);
         if (storedChallenge !== challenge) return res.status(400).json({ error: 'Invalid or expired challenge' });
@@ -37,11 +36,11 @@ router.post('/verify', async (req, res) => {
             await user.save();
         }
 
-        const token = jwt.sign(
-            { walletAddress: user.walletAddress, userId: user._id, isAdmin: user.isAdmin },
-            process.env.JWT_SECRET || 'secret',
-            { expiresIn: '24h' }
-        );
+        const token = issueToken({ 
+            walletAddress: user.walletAddress, 
+            userId: (user._id as any).toString(), 
+            isAdmin: !!user.isAdmin 
+        });
 
         await redisClient.del(`challenge:${walletAddress}`);
         res.json({ token, user });

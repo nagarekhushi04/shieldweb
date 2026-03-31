@@ -6,20 +6,16 @@ import User from '../models/User';
 import { hashUrl, reportThreatOnChain, mintRewardTokens } from '../services/stellarService';
 import { scoreUrl } from '../services/mlService';
 import { io } from '../index';
+import { validate, reportSchema } from '../validators';
 
 const router = Router();
 
-const reportSchema = z.object({
-    url: z.string().url(),
-    threatType: z.enum(['phishing', 'scam', 'malware', 'rug_pull', 'fake_wallet', 'other']),
-    severity: z.number().min(1).max(4),
-    description: z.string().optional(),
-    evidence: z.string().optional()
-});
+// Validation is now handled by the validate(reportSchema) middleware
 
-router.post('/submit', requireAuth, async (req: AuthRequest, res) => {
+
+router.post('/submit', requireAuth, validate(reportSchema), async (req: AuthRequest, res) => {
     try {
-        const validated = reportSchema.parse(req.body);
+        const validated = req.body;
         const domain = new URL(validated.url).hostname;
         const hash = hashUrl(validated.url);
         

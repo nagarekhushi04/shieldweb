@@ -4,15 +4,22 @@ import { redisClient } from '../db';
 import Threat from '../models/Threat';
 import { hashUrl, checkThreatOnChain } from '../services/stellarService';
 import { scoreUrl } from '../services/mlService';
+import { validate, urlSchema } from '../validators';
 
 const router = Router();
 
-const urlSchema = z.string().url();
+// urlSchema is now imported from ../validators
+
 
 router.get('/check', async (req, res) => {
     try {
         const { url } = req.query;
-        const validUrl = urlSchema.parse(url as string);
+        if (!url || typeof url !== 'string') return res.status(400).json({ error: 'Missing url query parameter' });
+        
+        const validUrlResult = urlSchema.safeParse(url);
+        if (!validUrlResult.success) return res.status(400).json({ error: 'Invalid URL format' });
+        
+        const validUrl = validUrlResult.data;
         const domain = new URL(validUrl).hostname;
         const hash = hashUrl(validUrl);
 

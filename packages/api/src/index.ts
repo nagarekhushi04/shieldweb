@@ -12,6 +12,7 @@ import threatRoutes from './routes/threats';
 import reportRoutes from './routes/reports';
 import rewardRoutes from './routes/rewards';
 import statsRoutes from './routes/stats';
+import communityRoutes from './routes/community';
 
 import { connectDB, redisStatus, mongoStatus } from './db';
 import { monitoring } from './services/monitoringService';
@@ -127,6 +128,7 @@ app.use('/api/threats', threatRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/rewards', rewardRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/community', communityRoutes);
 
 app.get('/api/health', (req, res) => {
     res.json({

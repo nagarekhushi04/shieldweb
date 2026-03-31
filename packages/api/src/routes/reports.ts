@@ -7,6 +7,8 @@ import { hashUrl, reportThreatOnChain, mintRewardTokens } from '../services/stel
 import { scoreUrl } from '../services/mlService';
 import { io } from '../index';
 import { validate, reportSchema } from '../validators';
+import { getISOWeek, getYear } from 'date-fns';
+import Contribution from '../models/Contribution';
 
 const router = Router();
 
@@ -72,6 +74,16 @@ router.post('/submit', requireAuth, validate(reportSchema), async (req: AuthRequ
             const verifiedCount = await Threat.countDocuments({ verified: true });
             io.to('stats:live').emit('stats:update', { totalThreats: totalCount, verifiedThreats: verifiedCount });
         }
+
+        // Record contribution
+        await Contribution.create({
+            contributorWallet: req.user.walletAddress,
+            type: 'report',
+            referenceId: threat._id,
+            points: 10,
+            weekNumber: getISOWeek(new Date()),
+            year: getYear(new Date())
+        });
 
         res.json({ reportId: threat._id, mlScore: mlRes.score, txHash });
     } catch (err) {

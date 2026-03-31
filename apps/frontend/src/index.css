@@ -1,34 +1,90 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @theme {
-  --color-navy: #0F172A;
-  --color-slate-850: #1E293B;
-  --color-primary-blue: #3B82F6;
-  --color-threat-red: #EF4444;
-  --color-safe-green: #10B981;
-  --color-warning-amber: #F59E0B;
+  --color-surface: #0b1326;
+  --color-surface-low: #131b2e;
+  --color-surface-container: #171f33;
+  --color-surface-high: #222a3d;
+  --color-surface-highest: #2d3449;
+  
+  --color-primary: #adc6ff;
+  --color-primary-on: #002e6a;
+  
+  --color-secondary: #bcc7de;
+  --color-secondary-container: #3e495d;
+  
+  --color-cyber-blue: #0ea5e9;
+  --color-neon-purple: #8b5cf6;
+  --color-vibrant-pink: #ec4899;
+  
+  --color-success: #4edea3;
+  --color-error: #ffb4ab;
+  --color-outline: #42475430;
   
   --font-sans: "Inter", "system-ui", "sans-serif";
+  --radius-lg: 1rem;
+  --radius-DEFAULT: 0.5rem;
 }
 
 @layer base {
   body {
-    @apply bg-navy text-white font-sans;
+    @apply bg-surface text-[#dae2fd] font-sans selection:bg-primary/30 selection:text-white;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
-.glass-card {
-  @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl;
+@utility glass-morphism {
+  @apply bg-surface-highest/70 backdrop-blur-xl border border-outline shadow-[0_24px_48px_rgba(0,0,0,0.4)];
 }
 
-.text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-blue to-purple-400;
+@utility sentinel-card {
+  @apply bg-surface-container rounded-lg p-6 transition-all duration-300;
 }
 
-.input-focus-ring {
-  @apply focus:ring-2 focus:ring-primary-blue/50 transition-all;
+@utility sentinel-section {
+  @apply bg-surface-low rounded-lg p-8;
 }
 
-.btn-primary {
-  @apply bg-primary-blue hover:bg-blue-600 transition-all;
+@utility text-editorial {
+  @apply tracking-tight font-semibold text-[#dae2fd];
 }
+
+@utility btn-sentinel-primary {
+  @apply bg-primary text-primary-on font-bold px-6 py-3 rounded-DEFAULT hover:scale-[1.02] active:scale-[0.98] transition-all;
+}
+
+@utility btn-sentinel-secondary {
+  @apply bg-secondary-container text-[#dae2fd] font-medium px-6 py-3 rounded-DEFAULT hover:bg-surface-high transition-all;
+}
+
+@utility input-sentinel {
+  @apply bg-surface-highest/50 border border-outline rounded-DEFAULT p-3 text-white focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all outline-none;
+}
+
+/* Compatibility Aliases */
+@utility glass-card { @apply glass-morphism; }
+@utility btn-primary { @apply btn-sentinel-primary; }
+@utility text-gradient { @apply bg-clip-text text-transparent bg-gradient-to-r from-cyber-blue via-neon-purple to-vibrant-pink animate-gradient-x; }
+
+@utility colorful-glow {
+  @apply relative;
+  &::before {
+    content: "";
+    @apply absolute -inset-0.5 bg-gradient-to-r from-cyber-blue via-neon-purple to-vibrant-pink rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200;
+  }
+}
+
+@utility animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 15s ease infinite;
+}
+
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+
+
+

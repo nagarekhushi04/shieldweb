@@ -1,11 +1,13 @@
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
+import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import slowDown from 'express-slow-down';
 import mongoSanitize from 'express-mongo-sanitize';
+// @ts-ignore
 import xss from 'xss-clean';
 import authRoutes from './routes/auth';
 import threatRoutes from './routes/threats';
@@ -27,9 +29,42 @@ connectDB().then(() => {
 });
 
 const app = express();
+
+// Request Logger - MOVE TO TOP
+app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+        const duration = Date.now() - start;
+        console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} ${res.statusCode} - ${duration}ms`);
+    });
+    next();
+});
+
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    'https://shieldweb3.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+    'http://localhost:5176',
+    'http://localhost:5177',
+    'http://localhost:5178',
+    'http://localhost:5179',
+    'chrome-extension://'
+].filter(Boolean);
+
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
-    cors: { origin: process.env.FRONTEND_URL || '*', methods: ['GET', 'POST'] }
+    cors: { 
+        origin: (origin, callback) => {
+            if (!origin) return callback(null, true);
+            const allowed = allowedOrigins.some(o => origin.startsWith(o!));
+            if (allowed) return callback(null, true);
+            callback(new Error(`Socket CORS: origin ${origin} not allowed`));
+        },
+        methods: ['GET', 'POST'],
+        credentials: true
+    }
 });
 
 export { io };
@@ -51,15 +86,8 @@ app.use(helmet({
     referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
 }));
 
-const allowedOrigins = [
-    process.env.FRONTEND_URL,
-    'https://shieldweb3.vercel.app',
-    'http://localhost:5173',
-    'chrome-extension://'
-].filter(Boolean);
-
 app.use(cors({
-    origin: (origin, callback) => {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
         if (!origin) return callback(null, true);
         const allowed = allowedOrigins.some(o => origin.startsWith(o!));
         if (allowed) return callback(null, true);

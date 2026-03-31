@@ -20,7 +20,7 @@ export const reportSchema = z.object({
   threatType: z.enum(['phishing', 'scam', 'malware', 'rug_pull', 'fake_wallet', 'other']),
   severity: z.number().int().min(1).max(4),
   description: z.string().max(1000).optional(),
-  evidence: z.string().url().optional()
+  evidence: z.string().url().or(z.literal('')).optional()
 });
 
 export const challengeSchema = z.object({
@@ -38,6 +38,7 @@ export function validate(schema: z.ZodSchema) {
   return (req: Request, res: Response, next: NextFunction) => {
     const result = schema.safeParse(req.body);
     if (!result.success) {
+      console.error('Validation failed for ' + req.path, result.error.errors);
       return res.status(400).json({
         error: 'Validation failed',
         details: result.error.errors.map(e => ({

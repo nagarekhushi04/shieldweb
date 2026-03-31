@@ -45,12 +45,12 @@ export const LiveThreatFeed: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 backdrop-blur-md shadow-xl overflow-hidden relative">
+    <div className="bg-surface-low border border-outline rounded-2xl p-6 backdrop-blur-md shadow-xl overflow-hidden relative">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className={`w-2.5 h-2.5 rounded-full ${connected ? 'bg-emerald-500 shadow-[0_0_10px_#10B981]' : 'bg-rose-500 animate-pulse'} `} />
           <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <Shield className="w-4 h-4 text-primary-blue" />
+            <Shield className="w-4 h-4 text-primary" />
             Live Threat Stream
           </h2>
         </div>
@@ -67,7 +67,7 @@ export const LiveThreatFeed: React.FC = () => {
           threats.map((t, i) => (
             <div 
               key={`${t.domain}-${i}`} 
-              className={`flex items-center justify-between p-4 rounded-xl border border-slate-800/50 bg-slate-800/20 transition-all duration-500 animate-in slide-in-from-top-4`}
+              className={`flex items-center justify-between p-4 rounded-xl border border-outline/5 bg-surface-container transition-all duration-500 animate-in slide-in-from-top-4 hover:bg-surface-high`}
             >
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
@@ -90,7 +90,7 @@ export const LiveThreatFeed: React.FC = () => {
                   {[...Array(4)].map((_, j) => (
                     <div 
                       key={j} 
-                      className={`w-1.5 h-1.5 rounded-full ${j < t.severity ? 'bg-primary-blue' : 'bg-slate-800'}`} 
+                      className={`w-1.5 h-1.5 rounded-full ${j < t.severity ? 'bg-primary' : 'bg-surface-high'}`} 
                     />
                   ))}
                 </div>

@@ -114,7 +114,38 @@ See [docs/API.md](docs/API.md) for full endpoint specifications.
 | Top Issue | Slow On-Chain Verification |
 
 ### Exported Data
-[user_feedback.xlsx](docs/user_feedback.xlsx) — Full response export
+### Detailed Testnet Feedback
+| Name | Rating | Feedback |
+|------|--------|----------|
+| Sneha Pathak | ⭐⭐⭐⭐ | Smooth UI feels like regular checkout. Very fast transactions. |
+| Omkar nanavare | ⭐⭐⭐⭐⭐ | Excellent UI and Functionality  |
+| Shantanu Udhane | ⭐⭐⭐⭐⭐ | perfect integration and ui layout |
+| Sudhir Bhalerao | ⭐⭐⭐⭐ | Works as expected, great integration. |
+| Aditya Shisodiya | ⭐⭐⭐⭐ | Update db and user interface for users update it with users feedback |
+| Vedang Bahirat | ⭐⭐⭐⭐⭐ | Easy onboarding and robust functionality. |
+| Asha Kumbhar | ⭐⭐⭐⭐ | Good idea, looking forward to new features. |
+| Aniket Bhilare | ⭐⭐⭐⭐⭐ | Awesome tool, very fast and efficient. |
+| Rajas Badade | ⭐⭐⭐⭐⭐ | Smooth process from start to finish. |
+| Thanchan Bhumij | ⭐⭐⭐⭐⭐ | The application is good just focused on user-boarding |
+| Vedang Bahirat | ⭐⭐⭐⭐⭐ | Love the gasless transactions. |
+| yash annadate | ⭐⭐⭐⭐⭐ | its overall good but expand the users.. |
+| Aravind Deshmukh | ⭐⭐⭐⭐⭐ | Stellar escrow saves merchants from scams. UI is very intuitive. |
+| Nishit Bhalerao | ⭐⭐⭐⭐⭐ | Great secure escrow service! I feel safe doing transactions. |
+| Sharayu Deogaonkar | ⭐⭐⭐⭐⭐ | Highly recommended for online deals. |
+| Harshal Jagdale | ⭐⭐⭐⭐⭐ | Amazing ui just need to improve on internal dashboard settings |
+| DC Nishit Bhalerao | ⭐⭐⭐⭐⭐ | Very secure platform, love it! |
+| Vaibhavi Agale | ⭐⭐⭐⭐⭐ | I loved the smooth interface and overall features. App is easy to use. |
+| Akshaya Awasthy | ⭐⭐⭐⭐⭐ | Instant finality and accurate dispute resolution. The best escrow for WhatsApp. |
+| Sunita Agarwal | ⭐⭐⭐⭐ | Giving buyers confidence in shop purchases. Would love to see more fiat options. |
+| Rajesh Das | ⭐⭐⭐⭐⭐ | AI Shield provides incredible deal security. The gasless feature is a game changer. |
+| Yogesh Nagare | ⭐⭐⭐⭐ | Works well, nice escrow. |
+| Neel pote | ⭐⭐⭐⭐ | the ux was good the colors were also nicely implemented |
+| Ayyush gaikwad | ⭐⭐⭐⭐⭐ | Smooth process overall. |
+| Druves Dongre | ⭐⭐⭐⭐⭐ | Great interface! |
+| Mrunal Ghorpade | ⭐⭐⭐⭐⭐ | No suggestion excellet ui and integration |
+| Vedant Pathak | ⭐⭐⭐⭐ | The UI is clean and it works perfectly. |
+| Khushi Nagare | ⭐⭐⭐⭐⭐ | the application is perfect just need to improve the buttons intergrity |
+| Tanmay tadd | ⭐⭐⭐⭐⭐ | very good problem solving application |
 
 ## 🔄 Iteration Plan
 

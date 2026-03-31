@@ -27,7 +27,12 @@ export const HomePage: React.FC = () => {
   }, [fetchStats]);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-surface selection:bg-primary/20 selection:text-white relative overflow-hidden">
+      {/* Decorative Background Blobs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-cyber-blue opacity-[0.03] blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] bg-vibrant-pink opacity-[0.03] blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute top-[40%] right-[20%] w-[30%] h-[30%] bg-neon-purple opacity-[0.02] blur-[100px] rounded-full pointer-events-none" />
+      
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -37,10 +42,10 @@ export const HomePage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-6xl md:text-7xl font-bold tracking-tight mb-8">
+            <h1 className="text-6xl md:text-8xl font-bold tracking-tighter mb-8 text-white drop-shadow-2xl">
               Protect Your <span className="text-gradient">Web3 Journey</span>
             </h1>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-[#c2c6d6] max-w-2xl mx-auto leading-relaxed">
               Decentralized phishing detection powered by the Stellar blockchain and real-time AI classification.
             </p>
             <div className="mt-8 flex items-center justify-center gap-3 text-xs text-slate-500 font-bold uppercase tracking-widest">
@@ -52,7 +57,7 @@ export const HomePage: React.FC = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="mt-12"
+            className="mt-12 group transition-all"
           >
             <ThreatChecker />
           </motion.div>
@@ -62,9 +67,10 @@ export const HomePage: React.FC = () => {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="glass-card py-12 rounded-3xl mb-24 relative overflow-hidden"
+          className="glass-morphism py-12 rounded-3xl mb-24 relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-primary-blue opacity-[0.03] blur-3xl rounded-full" />
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-primary opacity-[0.05] blur-3xl rounded-full" />
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-neon-purple opacity-[0.03] blur-3xl rounded-full" />
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-center px-8">
             <div className="relative">
               <div className="text-4xl font-bold text-primary-light mb-2">{stats?.totalThreats ?? 0}</div>
@@ -100,8 +106,9 @@ export const HomePage: React.FC = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.2 }}
               viewport={{ once: true }}
-              className="glass-card p-8 rounded-2xl hover:border-primary-blue/30 transition-all cursor-default"
+              className="sentinel-card hover:bg-surface-high transition-all cursor-default border border-outline/5 hover:border-neon-purple/20 relative group"
             >
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyber-blue to-neon-purple rounded-lg blur opacity-0 group-hover:opacity-10 transition duration-500" />
               <Icon className="h-10 w-10 text-primary-blue mb-6" />
               <h3 className="text-xl font-bold mb-3">{title}</h3>
               <p className="text-gray-400 leading-relaxed">{desc}</p>

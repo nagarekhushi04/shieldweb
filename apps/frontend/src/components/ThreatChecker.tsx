@@ -20,7 +20,7 @@ export const ThreatChecker: React.FC = () => {
   return (
     <div className="w-full max-w-2xl mx-auto mt-12 px-4">
       <form onSubmit={handleCheck} className="relative group">
-        <div className="absolute -inset-1 bg-gradient-to-r from-primary-blue to-purple-600 rounded-2xl blur opacity-25 group-focus-within:opacity-50 transition duration-1000 group-focus-within:duration-200" />
+        <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-2xl blur opacity-25 group-focus-within:opacity-50 transition duration-1000 group-focus-within:duration-200" />
         <div className="relative flex flex-col sm:flex-row gap-2">
           <input
             type="url"
@@ -28,12 +28,12 @@ export const ThreatChecker: React.FC = () => {
             placeholder="Enter web link to verify..."
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="flex-1 glass-card border-white/10 text-white rounded-xl px-6 py-4 focus:outline-none input-focus-ring text-lg"
+            className="flex-1 glass-morphism border-outline text-white rounded-xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all text-lg"
           />
           <button
             type="submit"
             disabled={isChecking}
-            className="btn-primary text-white font-bold px-8 py-4 rounded-xl disabled:opacity-50 flex items-center justify-center gap-2 whitespace-nowrap min-w-[150px]"
+            className="btn-sentinel-primary text-primary-on font-bold px-8 py-4 rounded-xl disabled:opacity-50 flex items-center justify-center gap-2 whitespace-nowrap min-w-[150px]"
           >
             {isChecking ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -48,7 +48,7 @@ export const ThreatChecker: React.FC = () => {
       </form>
       
       <div className="flex items-center justify-center gap-3 mt-4 text-gray-500 text-sm">
-        <div className="w-1.5 h-1.5 rounded-full bg-safe-green animate-pulse" />
+        <div className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
         AI Engine: Online
         <span className="mx-1">•</span>
         Stellar Ledger: Verified

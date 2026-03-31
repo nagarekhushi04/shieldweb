@@ -87,7 +87,8 @@ router.post('/submit', requireAuth, validate(reportSchema), async (req: AuthRequ
 
         res.json({ reportId: threat._id, mlScore: mlRes.score, txHash });
     } catch (err) {
-        res.status(400).json({ error: 'Invalid request' });
+        console.error('Report submission error:', err);
+        res.status(400).json({ error: 'Invalid request', message: err instanceof Error ? err.message : String(err) });
     }
 });
 

@@ -7,18 +7,31 @@ export default {
   theme: {
     extend: {
       colors: {
-        navy: '#0F172A',
-        slate: {
-          850: '#1E293B',
-        },
-        'primary-blue': '#3B82F6',
-        'threat-red': '#EF4444',
-        'safe-green': '#10B981',
-        'warning-amber': '#F59E0B',
+        'surface': '#0b1326',
+        'surface-low': '#131b2e',
+        'surface-container': '#171f33',
+        'surface-high': '#222a3d',
+        'surface-variant': '#2d3449',
+        'primary': '#adc6ff',
+        'on-primary': '#002e6a',
+        'secondary': '#bcc7de',
+        'secondary-container': '#3e495d',
+        'tertiary': '#4edea3',
+        'on-tertiary': '#003824',
+        'error': '#ffb4ab',
+        'on-error': '#690005',
+        'outline-variant': '#424754',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
+      borderRadius: {
+        'DEFAULT': '0.5rem',
+        'lg': '1rem',
+      },
+      backdropBlur: {
+        'xs': '2px',
+      }
     },
   },
   plugins: [],

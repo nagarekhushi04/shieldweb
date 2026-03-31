@@ -26,7 +26,7 @@ export const WalletConnect: React.FC = () => {
   if (isConnected && walletAddress) {
     return (
       <div className="flex items-center gap-3">
-        <div className="px-4 py-2 bg-slate rounded-lg border border-gray-700 flex items-center gap-2">
+        <div className="px-4 py-2 bg-surface-container rounded-lg border border-outline flex items-center gap-2">
           <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-500" />
           <span className="text-white text-sm font-medium">
             {walletAddress.slice(0, 4)}...{walletAddress.slice(-4)}
@@ -46,7 +46,7 @@ export const WalletConnect: React.FC = () => {
     <button
       onClick={() => connect()}
       disabled={isLoading}
-      className="px-4 py-2 bg-primary-blue text-white font-medium rounded-lg hover:bg-blue-600 disabled:opacity-50 transition-colors"
+      className="btn-sentinel-primary"
     >
       {isLoading ? 'Connecting...' : 'Connect Wallet'}
     </button>

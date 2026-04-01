@@ -6,9 +6,5 @@
   "framework": null,
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "env": {
-    "VITE_API_URL": "@shieldweb3_api_url",
-    "VITE_STELLAR_NETWORK": "testnet"
-  }
+  ]
 }

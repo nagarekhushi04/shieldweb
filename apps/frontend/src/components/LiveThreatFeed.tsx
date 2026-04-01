@@ -17,8 +17,21 @@ export const LiveThreatFeed: React.FC = () => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4001';
-    socketRef.current = io(apiUrl);
+    const apiUrl = import.meta.env.VITE_API_URL || '';
+    
+    // Don't attempt Socket.IO connection if no real API URL is configured
+    // or if we're on a production deployment pointing to localhost
+    const isLocalhost = !apiUrl || apiUrl.includes('localhost') || apiUrl.includes('127.0.0.1');
+    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    
+    if (isProduction && isLocalhost) {
+      // On Vercel with no hosted backend — skip Socket.IO entirely
+      console.log('Skipping Socket.IO: no remote API configured');
+      return;
+    }
+
+    const connectUrl = apiUrl || 'http://localhost:4001';
+    socketRef.current = io(connectUrl);
     
     socketRef.current.on('connect', () => {
       console.log('Connected to live threat feed');

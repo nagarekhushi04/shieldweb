@@ -7,9 +7,24 @@ import type {
   GlobalStats, 
   ReportData 
 } from '../types';
+// Determine API base URL:
+// - If VITE_API_URL is set (e.g. on Vercel with a hosted backend), use it
+// - On localhost dev, fall back to localhost:4001
+// - On production with no VITE_API_URL, use '' (relative paths — will 404 gracefully)
+function getApiBaseUrl(): string {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl) return envUrl;
+  
+  const isProduction = typeof window !== 'undefined' 
+    && window.location.hostname !== 'localhost' 
+    && window.location.hostname !== '127.0.0.1';
+  
+  return isProduction ? '' : 'http://localhost:4001';
+}
 
 export const api = axios.create({ 
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:4001' 
+  baseURL: getApiBaseUrl(),
+  timeout: 10000,
 });
 
 api.interceptors.request.use((config) => {
@@ -26,8 +41,10 @@ api.interceptors.response.use(
     if (err.response?.status === 401 && !err.config.url.includes('/auth/verify')) { 
       localStorage.removeItem('shieldweb3_token');
       localStorage.removeItem('shieldweb3_user');
-      // We don't force redirect here to avoid losing user input; 
-      // let the component handle the 401 via toast or local state.
+    }
+    // On production without backend, suppress network errors to avoid console spam
+    if (!err.response && getApiBaseUrl() === '') {
+      return Promise.resolve({ data: null, status: 0 });
     }
     return Promise.reject(err);
   }

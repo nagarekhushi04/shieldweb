@@ -34,8 +34,15 @@ export async function signChallenge(challenge: string, walletAddress: string): P
     // To prove ownership of a Stellar account via Freighter, we create a dummy transaction
     const server = new StellarSdk.Horizon.Server('https://horizon-testnet.stellar.org');
     
-    // In newer SDKs, sequenceNumber is a string, we use BigNumber to increment
-    const account = await server.loadAccount(walletAddress);
+    // Try to load the account; if it doesn't exist on testnet, use a dummy sequence
+    let account: StellarSdk.Account;
+    try {
+      account = await server.loadAccount(walletAddress);
+    } catch (loadErr: any) {
+      // Account not funded on testnet — create a local Account object with sequence 0
+      console.warn('Account not found on testnet, using local sequence for signing:', loadErr?.message);
+      account = new StellarSdk.Account(walletAddress, '0');
+    }
     
     const transaction = new StellarSdk.TransactionBuilder(account, { 
       fee: '100', 
@@ -43,7 +50,7 @@ export async function signChallenge(challenge: string, walletAddress: string): P
     })
       .addMemo(StellarSdk.Memo.text(challenge.slice(0, 28)))
       .addOperation(StellarSdk.Operation.bumpSequence({ 
-        bumpTo: (parseInt(account.sequenceNumber()) + 1).toString()
+        bumpTo: '1'
       }))
       .setTimeout(30)
       .build();

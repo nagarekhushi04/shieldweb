@@ -69,8 +69,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       let signature;
       try {
         signature = await signChallenge(challenge, walletAddress);
-      } catch {
-        toast.error('Message signature rejected.');
+      } catch (signErr: any) {
+        toast.error(signErr?.message || 'Message signature rejected.');
         return;
       }
 
@@ -81,10 +81,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ token, user, walletAddress, isConnected: true });
       
       toast.success('Successfully logged in.');
-    } catch (error) {
-      console.error(error);
-      toast.error('Authentication failed');
-      get().disconnect();
+    } catch (error: any) {
+      console.error('Auth login error:', error);
+      const msg = error?.response?.data?.error || error?.message || 'Authentication failed';
+      toast.error(`Auth error: ${msg}`);
+      // Don't disconnect on transient errors — keep wallet connected
     } finally {
       set({ isLoading: false });
     }

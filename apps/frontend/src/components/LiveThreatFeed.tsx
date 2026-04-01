@@ -17,7 +17,7 @@ export const LiveThreatFeed: React.FC = () => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4001';
     socketRef.current = io(apiUrl);
     
     socketRef.current.on('connect', () => {

@@ -46,8 +46,9 @@ router.post('/verify', validate(verifySchema), async (req: Request, res: Respons
 
         await redisClient.del(`challenge:${walletAddress}`);
         res.json({ token, user });
-    } catch (err) {
-        res.status(401).json({ error: 'Invalid signature' });
+    } catch (err: any) {
+        console.error('Auth verify error:', err?.message || err);
+        res.status(401).json({ error: err?.message || 'Invalid signature' });
     }
 });
 

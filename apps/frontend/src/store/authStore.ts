@@ -36,7 +36,17 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         localStorage.setItem('shieldweb3_wallet', address);
         set({ walletAddress: address, isConnected: true });
         
-        // Always try to login right after connecting
+        // Check if we're on production without a backend
+        const apiUrl = import.meta.env.VITE_API_URL || '';
+        const isLocalhost = !apiUrl || apiUrl.includes('localhost') || apiUrl.includes('127.0.0.1');
+        const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+        
+        if (isProduction && isLocalhost) {
+          toast.success(`Wallet connected: ${address.slice(0, 6)}...${address.slice(-4)}`);
+          // Skip backend auth — no API server available
+          return;
+        }
+        
         await get().login(address);
       } else {
         toast.error('Failed to connect to wallet.');

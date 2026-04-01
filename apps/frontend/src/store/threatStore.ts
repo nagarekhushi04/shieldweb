@@ -42,10 +42,12 @@ export const useThreatStore = create<ThreatState>((set) => ({
   fetchStats: async () => {
     try {
       const stats = await getGlobalStats();
-      set({ 
-        stats, 
-        onboardedCount: stats.totalReporters.toString() 
-      });
+      if (stats) {
+        set({ 
+          stats, 
+          onboardedCount: (stats.totalReporters ?? 0).toString() 
+        });
+      }
     } catch (error) {
       console.error('Failed to fetch stats', error);
     }

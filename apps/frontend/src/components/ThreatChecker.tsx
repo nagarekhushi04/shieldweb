@@ -106,7 +106,7 @@ export const ThreatChecker: React.FC = () => {
                     <div className="inline-flex flex-col md:items-end">
                       <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Risk Quotient</span>
                       <span className="text-xl font-editorial text-white">
-                        {lastResult.mlScore.toFixed(4)}
+                        {(lastResult.mlScore ?? 0).toFixed(4)}
                       </span>
                     </div>
                   </div>

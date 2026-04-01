@@ -177,7 +177,7 @@ export const AdminPage: React.FC = () => {
                                         <td className="px-8 py-5 text-sm text-slate-400">{row.email || '—'}</td>
                                         <td className="px-8 py-5 text-center font-bold text-sm">{row.verifiedReports}</td>
                                         <td className="px-8 py-5 text-center font-bold text-sm text-emerald-400 group-hover:scale-110 transition-transform">
-                                            {row.shw3Balance.toFixed(2)}
+                                            {(row.shw3Balance ?? 0).toFixed(2)}
                                         </td>
                                         <td className="px-8 py-5 text-center">
                                             <span className={`text-[9px] uppercase font-bold py-1 px-2 rounded ${

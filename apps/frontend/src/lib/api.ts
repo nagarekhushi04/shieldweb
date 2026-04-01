@@ -8,11 +8,11 @@ import type {
   ReportData 
 } from '../types';
 
-const client = axios.create({ 
+export const api = axios.create({ 
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:4000' 
 });
 
-client.interceptors.request.use((config) => {
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem('shieldweb3_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -20,7 +20,7 @@ client.interceptors.request.use((config) => {
   return config;
 });
 
-client.interceptors.response.use(
+api.interceptors.response.use(
   (response) => response, 
   (err) => {
     if (err.response?.status === 401 && !err.config.url.includes('/auth/verify')) { 
@@ -34,41 +34,41 @@ client.interceptors.response.use(
 );
 
 export async function checkUrl(url: string): Promise<ThreatCheckResult> {
-  const res = await client.get(`/api/threats/check`, { params: { url } });
+  const res = await api.get(`/api/threats/check`, { params: { url } });
   return res.data;
 }
 
 export async function submitReport(data: ReportData): Promise<{ reportId: string; mlScore: number; txHash: string | null }> {
-  const res = await client.post(`/api/reports/submit`, data);
+  const res = await api.post(`/api/reports/submit`, data);
   return res.data;
 }
 
 export async function getChallenge(walletAddress: string): Promise<{ challenge: string; expiresAt: number }> {
-  const res = await client.post(`/api/auth/challenge`, { walletAddress });
+  const res = await api.post(`/api/auth/challenge`, { walletAddress });
   return res.data;
 }
 
 export async function verifyAuth(walletAddress: string, signature: string, challenge: string): Promise<{ token: string; user: User }> {
-  const res = await client.post(`/api/auth/verify`, { walletAddress, signature, challenge });
+  const res = await api.post(`/api/auth/verify`, { walletAddress, signature, challenge });
   return res.data;
 }
 
 export async function getMyReports(): Promise<Report[]> {
-  const res = await client.get(`/api/reports/my-reports`);
+  const res = await api.get(`/api/reports/my-reports`);
   return res.data;
 }
 
 export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
-  const res = await client.get(`/api/stats/leaderboard`);
+  const res = await api.get(`/api/stats/leaderboard`);
   return res.data;
 }
 
 export async function getGlobalStats(): Promise<GlobalStats> {
-  const res = await client.get(`/api/stats/global`);
+  const res = await api.get(`/api/stats/global`);
   return res.data;
 }
 
 export async function getRewardBalance(walletAddress: string): Promise<{ shw3: string; xlm: string }> {
-  const res = await client.get(`/api/rewards/balance/${walletAddress}`);
+  const res = await api.get(`/api/rewards/balance/${walletAddress}`);
   return res.data;
 }

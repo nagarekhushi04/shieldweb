@@ -19,14 +19,15 @@ router.get('/global', async (req, res) => {
         });
 
         res.json({ 
-          totalThreats: totalThreats || 5, 
-          verifiedThreats: verifiedThreats || 3, 
-          totalReporters: totalReporters || 30, 
-          threatsBlockedToday: threatsBlockedToday || 2,
-          activeUsers24h: Math.floor(totalReporters * 0.4) || 12
+          totalThreats: totalThreats, 
+          verifiedThreats: verifiedThreats, 
+          totalReporters: totalReporters, 
+          threatsBlockedToday: threatsBlockedToday,
+          activeUsers24h: Math.floor(totalReporters * 0.4)
         });
     } catch (err) {
-        res.status(500).json({ error: "Error" });
+        console.error('Stats Error (global):', err);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
@@ -36,7 +37,7 @@ router.get('/trends', async (req, res) => {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
 
-    let trends = await Threat.aggregate([
+    const trends = await Threat.aggregate([
       { $match: { createdAt: { $gte: startDate } } },
       {
         $group: {
@@ -49,41 +50,21 @@ router.get('/trends', async (req, res) => {
       { $project: { date: "$_id", reported: 1, verified: 1, _id: 0 } }
     ]);
 
-    if (trends.length === 0) {
-      trends = Array.from({ length: 7 }).map((_, i) => {
-        const d = new Date();
-        d.setDate(d.getDate() - (7-i));
-        return {
-          date: d.toISOString().split('T')[0],
-          reported: Math.floor(Math.random() * 5) + 3,
-          verified: Math.floor(Math.random() * 3) + 1
-        };
-      });
-    }
     res.json(trends);
   } catch (err) {
-    res.status(500).json({ error: "Error" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
 router.get('/breakdown', async (req, res) => {
   try {
-    let breakdown = await Threat.aggregate([
+    const breakdown = await Threat.aggregate([
       { $group: { _id: "$threatType", value: { $sum: 1 } } },
       { $project: { name: "$_id", value: 1, _id: 0 } }
     ]);
-
-    if (breakdown.length === 0) {
-       breakdown = [
-         { name: 'phishing', value: 18 },
-         { name: 'scam', value: 12 },
-         { name: 'malware', value: 7 },
-         { name: 'fake_wallet', value: 5 }
-       ];
-    }
     res.json(breakdown);
   } catch (err) {
-    res.status(500).json({ error: "Error" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -103,18 +84,21 @@ router.get('/top-domains', async (req, res) => {
         ]);
         res.json(topDomains);
     } catch (err) {
-        res.status(500).json({ error: "Error" });
+        console.error('Stats Error (global):', err);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
 router.get('/ml-performance', async (req, res) => {
+    // These could potentially be tracked in a ModelPerformance collection, 
+    // but returning zeros for now if they are intended to be "live".
     res.json({
-        accuracy: 96.4,
-        precision: 95.8,
-        recall: 97.2,
-        f1: 96.5,
+        accuracy: 0,
+        precision: 0,
+        recall: 0,
+        f1: 0,
         lastTrained: new Date().toISOString(),
-        totalPredictions: 1241
+        totalPredictions: 0
     });
 });
 
@@ -122,18 +106,6 @@ router.get('/leaderboard', async (req, res) => {
     try {
         const users = await User.find().sort({ verifiedReports: -1 }).limit(10);
         
-        if (users.length === 0) {
-            const formatted = (usersData as any[]).slice(0, 10).map((u: any, index: number) => ({
-                rank: index + 1,
-                walletAddress: u.wallet,
-                totalReports: Math.floor(Math.random() * 20) + 15,
-                verifiedReports: Math.floor(Math.random() * 10) + 5,
-                shw3Earned: Math.floor(Math.random() * 100) + 50,
-                badge: index === 0 ? 'Legend' : index < 3 ? 'Elite' : 'Defender'
-            }));
-            return res.json(formatted);
-        }
-
         const formatted = users.map((user: any, index: number) => ({
             rank: index + 1,
             walletAddress: user.walletAddress,
@@ -144,7 +116,7 @@ router.get('/leaderboard', async (req, res) => {
         }));
         res.json(formatted);
     } catch {
-        res.status(500).json({ error: "Error" });
+        res.status(500).json({ error: "Internal Server Error" });
     }
 });
 

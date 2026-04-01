@@ -1,14 +1,15 @@
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
-import cors from 'cors';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
-import slowDown from 'express-slow-down';
+import helmet from 'helmet';
+import cors from 'cors';
 import mongoSanitize from 'express-mongo-sanitize';
 // @ts-ignore
 import xss from 'xss-clean';
+import rateLimit from 'express-rate-limit';
+import slowDown from 'express-slow-down';
+
 import authRoutes from './routes/auth';
 import threatRoutes from './routes/threats';
 import reportRoutes from './routes/reports';
@@ -30,7 +31,7 @@ connectDB().then(() => {
 
 const app = express();
 
-// Request Logger - MOVE TO TOP
+// Request Logger
 app.use((req, res, next) => {
     const start = Date.now();
     res.on('finish', () => {
@@ -69,7 +70,7 @@ const io = new Server(httpServer, {
 
 export { io };
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4002;
 
 app.use(helmet({
     contentSecurityPolicy: {
@@ -149,8 +150,6 @@ app.use('/api/auth', authLimiter);
 app.use('/api/threats/check', checkLimiter);
 app.use('/api/reports/submit', reportLimiter);
 
-
-
 app.use('/api/auth', authRoutes);
 app.use('/api/threats', threatRoutes);
 app.use('/api/reports', reportRoutes);
@@ -217,5 +216,4 @@ io.on('connection', (socket) => {
 httpServer.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     startDigestScheduler();
-});
-
+});// Trigger

@@ -21,6 +21,8 @@ export const redisClient = process.env.REDIS_URL && process.env.REDIS_URL !== 'r
     ? createClient({ url: process.env.REDIS_URL })
     : new MockRedisClient() as any;
 
+let mongoMemoryServer: MongoMemoryServer | null = null;
+
 export async function connectDB() {
     try {
         if (process.env.REDIS_URL && process.env.REDIS_URL !== 'redis://localhost:6379') {
@@ -42,15 +44,31 @@ export async function connectDB() {
     }
 
     try {
-        let uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/shieldweb3';
+        let uri = process.env.MONGODB_URI;
         
         const start = Date.now();
+        // Fallback to MongoMemoryServer if no URI is provided or if connection fails
+        try {
+            if (uri) {
+                await mongoose.connect(uri, { serverSelectionTimeoutMS: 2000 });
+                console.log('MongoDB connected to ' + uri);
+                mongoStatus.status = 'connected';
+                mongoStatus.latency = Date.now() - start;
+                return;
+            }
+        } catch (initialErr) {
+            console.warn('Initial MongoDB connection failed, falling back to MemoryServer');
+        }
+
+        console.log('Starting MongoMemoryServer...');
+        mongoMemoryServer = await MongoMemoryServer.create();
+        uri = mongoMemoryServer.getUri();
         await mongoose.connect(uri);
-        console.log('MongoDB connected to ' + uri);
-        mongoStatus.status = 'connected';
+        console.log('MongoDB connected to In-Memory Server: ' + uri);
+        mongoStatus.status = 'connected (memory)';
         mongoStatus.latency = Date.now() - start;
     } catch (err) {
-        console.error('MongoDB error', err);
+        console.error('Final MongoDB error', err);
         mongoStatus.status = 'error';
         mongoStatus.latency = -1;
     }

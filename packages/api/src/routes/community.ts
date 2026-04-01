@@ -20,23 +20,10 @@ router.get('/contributors', async (req, res) => {
             .limit(10)
             .select('walletAddress totalReports verifiedReports shw3Balance joinedAt');
             
-        if (topUsers.length === 0) {
-            // Fallback to real project user data baseline
-            const contributors = (usersData as any[]).slice(0, 10).map((u, i) => ({
-                walletAddress: `${u.wallet.slice(0, 6)}...${u.wallet.slice(-4)}`,
-                totalReports: Math.floor(Math.random() * 20) + 10,
-                verifiedReports: Math.floor(Math.random() * 10) + 5,
-                shw3Earned: (Math.random() * 100 + 50).toFixed(2),
-                joinedAt: new Date(Date.now() - 86400000 * (i + 1)).toISOString(),
-                badge: i === 0 ? 'Guardian' : (i < 3 ? 'Sentinel' : 'Reporter')
-            }));
-            return res.json(contributors);
-        }
-
         const contributors = topUsers.map((u: any) => ({
             walletAddress: `${u.walletAddress.slice(0, 6)}...${u.walletAddress.slice(-4)}`,
-            totalReports: u.totalReports,
-            verifiedReports: u.verifiedReports,
+            totalReports: u.totalReports || 0,
+            verifiedReports: u.verifiedReports || 0,
             shw3Earned: Number(u.shw3Balance || 0).toFixed(2),
             joinedAt: u.joinedAt,
             badge: u.verifiedReports > 50 ? 'Guardian' : (u.verifiedReports > 10 ? 'Sentinel' : 'Reporter')

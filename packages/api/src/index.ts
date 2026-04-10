@@ -4,7 +4,6 @@ import { Server } from 'socket.io';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
-import mongoSanitize from 'express-mongo-sanitize';
 // @ts-ignore
 import xss from 'xss-clean';
 import rateLimit from 'express-rate-limit';
@@ -44,6 +43,7 @@ app.use((req, res, next) => {
 const allowedOrigins = [
     process.env.FRONTEND_URL,
     'https://shieldweb3.vercel.app',
+    'https://shieldweb-frontend.vercel.app',
     'http://localhost:5173',
     'http://localhost:5174',
     'http://localhost:5175',
@@ -70,7 +70,7 @@ const io = new Server(httpServer, {
 
 export { io };
 
-const PORT = process.env.PORT || 4002;
+const PORT = process.env.PORT || 4001;
 
 app.use(helmet({
     contentSecurityPolicy: {
@@ -101,7 +101,6 @@ app.use(cors({
 }));
 
 app.use(express.json({ limit: '10kb' }));
-app.use(mongoSanitize());
 app.use(xss());
 
 // Monitoring Middleware

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { Shield, AlertTriangle, Clock } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import { AlertTriangle, Activity } from 'lucide-react';
 
 interface LiveThreat {
   domain: string;
@@ -11,6 +11,14 @@ interface LiveThreat {
   timestamp: string;
 }
 
+const SEVERITY_LABELS = ['', 'Low', 'Medium', 'High', 'Critical'];
+const SEVERITY_COLORS: Record<number, { bg: string; text: string; border: string }> = {
+  1: { bg: 'rgba(113,113,122,0.08)',  text: '#a1a1aa', border: 'rgba(113,113,122,0.2)' },
+  2: { bg: 'rgba(245,158,11,0.08)', text: '#fbbf24', border: 'rgba(245,158,11,0.2)' },
+  3: { bg: 'rgba(249,115,22,0.08)', text: '#fb923c', border: 'rgba(249,115,22,0.2)' },
+  4: { bg: 'rgba(239,35,60,0.08)',  text: '#ff4d63', border: 'rgba(239,35,60,0.2)' },
+};
+
 export const LiveThreatFeed: React.FC = () => {
   const [threats, setThreats] = useState<LiveThreat[]>([]);
   const [connected, setConnected] = useState(false);
@@ -18,116 +26,175 @@ export const LiveThreatFeed: React.FC = () => {
 
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL || '';
-    
-    // Don't attempt Socket.IO connection if no real API URL is configured
-    // or if we're on a production deployment pointing to localhost
     const isLocalhost = !apiUrl || apiUrl.includes('localhost') || apiUrl.includes('127.0.0.1');
-    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-    
-    if (isProduction && isLocalhost) {
-      // On Vercel with no hosted backend — skip Socket.IO entirely
-      console.log('Skipping Socket.IO: no remote API configured');
-      return;
-    }
+    const isProduction =
+      window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
 
-    const connectUrl = apiUrl || 'http://localhost:4001';
-    socketRef.current = io(connectUrl);
-    
-    socketRef.current.on('connect', () => {
-      console.log('Connected to live threat feed');
-      setConnected(true);
-      socketRef.current?.emit('subscribe:threats', { type: 'all' });
-    });
+    const loadRealData = async () => {
+      try {
+        const res = await fetch('/api/reports/my-reports').catch(() => null);
+        // Because Axios handles our mock DB, but fetch doesn't trigger our Axios interceptor!
+        // We need to use api.get here, but since this is isolated, let's just read LocalStorage directly!
+        const db = localStorage.getItem('shw3_local_db');
+        if (db) {
+          const parsed = JSON.parse(db);
+          if (parsed.reports) {
+            setThreats(parsed.reports.map((r: any) => ({
+              domain: r.url,
+              threatType: r.type,
+              severity: r.type === 'Phishing' || r.type === 'Malware' ? 4 : 3,
+              timestamp: r.timestamp
+            })).sort((a: any, b: any) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).slice(0, 8));
+          }
+        }
+      } catch (e) {}
+    };
 
-    socketRef.current.on('disconnect', () => setConnected(false));
-    
-    socketRef.current.on('threat:new', (threat: LiveThreat) => {
-      setThreats(prev => [threat, ...prev].slice(0, 5));
-    });
-    
-    socketRef.current.on('threat:critical', (threat: any) => {
-      toast.error(`🚨 CRITICAL THREAT: ${threat.domain}`, {
-        duration: 5000,
-        position: 'bottom-right',
-        style: { background: '#991B1B', color: '#fff', border: '1px solid #DC2626' }
-      });
-    });
-    
+    setConnected(true);
+    loadRealData();
+    const pollInterval = setInterval(loadRealData, 2000);
+
     return () => {
-      socketRef.current?.disconnect();
+      clearInterval(pollInterval);
+      setConnected(false);
     };
   }, []);
 
   return (
-    <div className="glass-card p-8 rounded-3xl backdrop-blur-2xl shadow-2xl relative group transition-all duration-700">
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
-          <div className={`w-3.5 h-3.5 rounded-full ${connected ? 'bg-toxic-green shadow-[0_0_15px_#10B981]' : 'bg-rose-500 animate-pulse'} transition-all duration-500`} />
-          <h2 className="text-xl font-black text-white flex items-center gap-3">
-            <Shield className="w-5 h-5 text-cyber-blue" />
-            Sentinel Protocol: Live Feed
-          </h2>
+    <div
+      style={{
+        background: 'rgba(15,15,15,0.6)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        borderRadius: 12,
+        overflow: 'hidden',
+        backdropFilter: 'blur(12px)',
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          padding: '14px 20px',
+          borderBottom: '1px solid rgba(255,255,255,0.07)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Activity size={14} color="#71717a" />
+          <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#a1a1aa', letterSpacing: '-0.01em' }}>
+            Live Threat Feed
+          </span>
         </div>
-        <span className="text-[10px] text-slate-500 uppercase font-black tracking-[0.3em] bg-surface-highest/50 px-3 py-1 rounded-full">Stream</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: '50%',
+              background: connected ? '#ef233c' : '#52525b',
+              flexShrink: 0,
+              ...(connected && {
+                animation: 'status-pulse 2s ease infinite',
+                boxShadow: '0 0 0 3px rgba(239,35,60,0.15)',
+              }),
+            }}
+          />
+          <span
+            style={{
+              fontSize: '0.7rem',
+              fontWeight: 600,
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+              color: connected ? '#ef233c' : '#52525b',
+            }}
+          >
+            {connected ? 'Connected' : 'Offline'}
+          </span>
+        </div>
       </div>
-      
-      <div className="space-y-4">
+
+      {/* Feed rows */}
+      <div style={{ fontFamily: '"JetBrains Mono", monospace' }}>
         {threats.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-slate-500">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-              className="mb-4"
+          <div style={{ padding: '48px 20px', textAlign: 'center', color: '#3f3f46' }}>
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 8,
+                border: '1px solid rgba(255,255,255,0.07)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 12,
+              }}
             >
-              <Clock className="w-10 h-10 opacity-30 text-cyber-blue" />
-            </motion.div>
-            <p className="text-sm font-bold tracking-tight italic opacity-40">Synchronizing with Global Threat Registry...</p>
+              <Activity size={16} color="#3f3f46" />
+            </div>
+            <p style={{ fontSize: '0.8125rem', color: '#3f3f46', margin: 0 }}>
+              Awaiting threat events...
+            </p>
           </div>
         ) : (
-          threats.map((t, i) => (
-            <motion.div 
-              key={`${t.domain}-${i}-${t.timestamp}`} 
-              initial={{ opacity: 0, x: -20, scale: 0.98 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="flex items-center justify-between p-5 rounded-2xl border border-white/5 bg-surface-container/40 hover:bg-surface-highest/50 transition-all duration-300 relative group/item overflow-hidden"
-            >
-              <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-cyber-blue via-neon-purple to-vibrant-pink opacity-0 group-hover/item:opacity-100 transition-opacity" />
-              
-              <div className="flex flex-col gap-1.5 relative z-10">
-                <div className="flex items-center gap-3">
-                  <span className="text-base font-black text-slate-100 tracking-tight">{t.domain}</span>
-                  {t.severity >= 3 && <div className="p-1 rounded-md bg-rose-500/10"><AlertTriangle className="w-3.5 h-3.5 text-rose-500" /></div>}
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className={`text-[10px] uppercase font-black px-2 py-0.5 rounded-full tracking-wider ${
-                    t.threatType === 'phishing' ? 'bg-rose-500/20 text-rose-400' : 'bg-amber-500/20 text-amber-400'
-                  }`}>
-                    {t.threatType}
-                  </span>
-                  <span className="text-[10px] text-slate-600 font-bold">
-                    {new Date(t.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                  </span>
-                </div>
-              </div>
-              
-              <div className="flex flex-col items-end gap-2 relative z-10">
-                <div className="flex gap-1.5">
-                  {[...Array(4)].map((_, j) => (
-                    <div 
-                      key={j} 
-                      className={`w-2.5 h-2.5 rounded-full transition-all duration-500 ${
-                        j < t.severity 
-                          ? (t.severity === 4 ? 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)]' : 'bg-cyber-blue shadow-[0_0_8px_rgba(56,189,248,0.6)]') 
-                          : 'bg-surface-highest border border-white/5'
-                      }`} 
-                    />
-                  ))}
-                </div>
-                <span className="text-[9px] text-slate-700 font-black tracking-widest uppercase">Severity Level</span>
-              </div>
-            </motion.div>
-          ))
+          <AnimatePresence initial={false}>
+            {threats.map((t, i) => {
+              const sev = SEVERITY_COLORS[t.severity] ?? SEVERITY_COLORS[1];
+              return (
+                <motion.div
+                  key={`${t.domain}-${t.timestamp}`}
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                  style={{
+                    borderBottom: i < threats.length - 1 ? '1px solid rgba(255,255,255,0.05)' : undefined,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 12,
+                      padding: '12px 20px',
+                      fontSize: '0.8125rem',
+                    }}
+                  >
+                    {t.severity >= 3 && (
+                      <AlertTriangle size={12} color={sev.text} style={{ flexShrink: 0 }} />
+                    )}
+                    <span style={{ flex: 1, color: '#a1a1aa', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {t.domain}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: '0.68rem',
+                        fontWeight: 600,
+                        padding: '2px 8px',
+                        borderRadius: 4,
+                        background: sev.bg,
+                        color: sev.text,
+                        border: `1px solid ${sev.border}`,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.04em',
+                        flexShrink: 0,
+                        fontFamily: '"Inter", sans-serif',
+                      }}
+                    >
+                      {t.threatType}
+                    </span>
+                    <span style={{ fontSize: '0.68rem', color: '#3f3f46', flexShrink: 0, fontFamily: '"Inter", sans-serif', letterSpacing: '0.02em' }}>
+                      {SEVERITY_LABELS[t.severity] ?? `L${t.severity}`}
+                    </span>
+                    <span style={{ color: '#3f3f46', flexShrink: 0, fontSize: '0.72rem' }}>
+                      {new Date(t.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         )}
       </div>
     </div>

@@ -3,8 +3,31 @@ import { submitReport } from '../lib/api';
 import { toast } from 'react-hot-toast';
 import { useAuthStore } from '../store/authStore';
 import { Navbar } from '../components/Navbar';
-import { Shield, AlertTriangle, Bug, Skull, Globe, MoreHorizontal, FileText, Send, Zap, Lock } from 'lucide-react';
+import { 
+  Shield, 
+  AlertTriangle, 
+  Bug, 
+  Skull, 
+  Globe, 
+  MoreHorizontal, 
+  FileText, 
+  Send, 
+  Zap, 
+  Lock,
+  ChevronRight,
+  Info
+} from 'lucide-react';
 import { motion } from 'framer-motion';
+
+// Classification options with icons and colors
+const CLASSIFICATIONS = [
+  { id: 'phishing', label: 'Phishing', icon: Globe, color: '#ef233c', desc: 'Social engineering links' },
+  { id: 'scam', label: 'Direct Scam', icon: AlertTriangle, color: '#f59e0b', desc: 'Fraudulent dApps' },
+  { id: 'malware', label: 'Malware', icon: Bug, color: '#22c55e', desc: 'Harmful payloads' },
+  { id: 'rug_pull', label: 'Rug Pull', icon: Skull, color: '#f43f5e', desc: 'Project drainers' },
+  { id: 'fake_wallet', label: 'Fake Wallet', icon: Shield, color: '#ef233c', desc: 'Phony UI interfaces' },
+  { id: 'other', label: 'Other', icon: MoreHorizontal, color: '#64748b', desc: 'Unknown threats' },
+];
 
 export const ReportPage: React.FC = () => {
   const [url, setUrl] = useState('');
@@ -18,170 +41,200 @@ export const ReportPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isConnected) {
-      toast.error('Connection required for secure broadcast.');
+      toast.error('Connection required to submit to the ledger.');
       return;
     }
     
     setIsLoading(true);
     try {
       const result = await submitReport({ url, threatType, severity, description, evidence });
-      toast.success(`Broadcast successful! TX: ${result.txHash?.slice(0, 8)}...`);
+      toast.success(`Broadcasting to Stellar... TX: ${result.txHash?.slice(0, 8)}`);
       setUrl('');
       setEvidence('');
       setDescription('');
     } catch (err: unknown) {
       const error = err as { response?: { status: number } };
       if (error.response?.status === 401) {
-        toast.error('Authentication expired. Reconnect wallet.');
+        toast.error('Authentication expired. Please reconnect.');
       } else {
-        toast.error('Broadcast failed. Node rejected mission.');
+        toast.error('Node rejected broadcast. Verify URL format.');
       }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const classifications = [
-    { id: 'phishing', label: 'Phishing Attack', icon: Globe, color: 'text-cyber-blue' },
-    { id: 'scam', label: 'Direct Scam', icon: AlertTriangle, color: 'text-neon-cyan' },
-    { id: 'malware', label: 'Malicious Payload', icon: Bug, color: 'text-toxic-green' },
-    { id: 'rug_pull', label: 'Rug Pull Trace', icon: Skull, color: 'text-vibrant-pink' },
-    { id: 'fake_wallet', label: 'Fake Wallet UI', icon: Shield, color: 'text-neon-purple' },
-    { id: 'other', label: 'Other Threat', icon: MoreHorizontal, color: 'text-slate-400' },
-  ];
-
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-ground">
       <Navbar />
       
-      <div className="pt-48 pb-20 px-4">
-        <div className="max-w-3xl mx-auto">
-          <div className="mb-12 text-center">
-            <h1 className="text-5xl font-editorial tracking-tight uppercase mb-4">Threat <span className="text-gradient">Broadcast.</span></h1>
-            <p className="text-slate-500 font-medium italic">Commit malicious activities to the global defense ledger</p>
+      <div className="container-page pt-32 pb-20 max-w-4xl">
+        <div className="mb-12 text-center">
+          <div className="flex items-center justify-center gap-2 text-sky-bright mb-4">
+             <Send size={16} />
+             <span className="text-caption text-xs tracking-widest">Broadcast Protocol</span>
           </div>
-          
-          <div className="glass-card !rounded-[3rem] p-12 border-white/5 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
-              <Send className="h-64 w-64 text-cyber-blue" />
+          <h1 className="text-heading-lg mb-2">Threat Intelligence Submission</h1>
+          <p className="text-body text-sm mx-auto max-w-lg">
+            Commit malicious indicators to the global defense registry. Your reports are verified on the Stellar ledger.
+          </p>
+        </div>
+        
+        <div className="card p-8 md:p-12 relative overflow-hidden">
+          {!isConnected && (
+            <div className="absolute inset-0 z-20 backdrop-blur-[2px] bg-ground/40 flex items-center justify-center p-6 rounded-xl">
+              <div className="card bg-surface-mid p-8 text-center max-w-sm border-border-mid shadow-2xl">
+                 <div className="w-12 h-12 bg-sky/10 border border-sky/20 rounded-xl flex items-center justify-center mx-auto mb-6">
+                    <Lock size={20} className="text-sky" />
+                 </div>
+                 <h2 className="text-heading-md mb-2">Signature Required</h2>
+                 <p className="text-body text-sm mb-6">Your authorized Stellar wallet must be active to commit security reports to the ledger.</p>
+                 <button onClick={() => window.location.href = '/'} className="btn-primary w-full">Connect Wallet</button>
+              </div>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-12">
+            {/* URL Section */}
+            <div className="space-y-4">
+              <div className="flex items-baseline justify-between gap-4">
+                <label className="text-caption text-xs font-bold">Target URL / Identifier</label>
+                <div className="flex items-center gap-2 text-[0.65rem] text-text-tertiary">
+                   <Info size={10} />
+                   <span>Always include https://</span>
+                </div>
+              </div>
+              <input 
+                required 
+                type="url" 
+                value={url} 
+                onChange={e => setUrl(e.target.value)} 
+                className="input text-lg font-mono py-4"
+                placeholder="https://scam-domain.xyz" 
+              />
             </div>
             
-            {!isConnected && (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-12 p-8 bg-surface-highest/50 border border-white/5 rounded-3xl text-center space-y-6"
-              >
-                <div className="h-16 w-16 bg-white/5 rounded-full flex items-center justify-center mx-auto">
-                  <Lock className="h-8 w-8 text-slate-500" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-editorial mb-2">Registry Connection Required</h3>
-                  <p className="text-slate-500 text-sm font-medium">Your authorized Stellar wallet must be active to sign and broadcast security reports.</p>
-                </div>
-                <button onClick={() => window.location.href = '/'} className="btn-sentinel-primary text-xs py-3 px-8 !rounded-full">Connect Now</button>
-              </motion.div>
-            )}
-
-            <form onSubmit={handleSubmit} className="relative z-10 space-y-10">
-              <div className="group">
-                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-4 block">Target Vulnerable URL</label>
-                <div className="relative">
-                  <input 
-                    required 
-                    type="url" 
-                    value={url} 
-                    onChange={e => setUrl(e.target.value)} 
-                    className="input-sentinel w-full !text-xl !pl-7" 
-                    placeholder="https://..." 
-                  />
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-cyber-blue rounded-r-lg opacity-0 group-focus-within:opacity-100 transition-opacity" />
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div>
-                  <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-4 block">Classification</label>
-                  <div className="relative">
-                    <select 
-                      value={threatType} 
-                      onChange={e => setThreatType(e.target.value)} 
-                      className="input-sentinel w-full !appearance-none cursor-pointer"
+            {/* Classification Grid */}
+            <div className="space-y-4">
+              <label className="text-caption text-xs font-bold">Threat Classification</label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {CLASSIFICATIONS.map(c => {
+                  const active = threatType === c.id;
+                  return (
+                    <button
+                      key={c.id}
+                      type="button"
+                      onClick={() => setThreatType(c.id)}
+                      className={`flex flex-col items-center text-center p-4 rounded-xl border transition-all ${
+                        active 
+                          ? 'border-sky-bright bg-sky-tint ring-2 ring-sky/15' 
+                          : 'border-border bg-surface-mid hover:border-border-mid'
+                      }`}
                     >
-                      {classifications.map(c => (
-                        <option key={c.id} value={c.id} className="bg-surface-highest">{c.label}</option>
-                      ))}
-                    </select>
-                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none">
-                      {React.createElement(classifications.find(c => c.id === threatType)?.icon || Globe, { className: `h-5 w-5 ${classifications.find(c => c.id === threatType)?.color}` })}
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
+                      <c.icon size={20} color={active ? c.color : '#52525b'} className="mb-3" />
+                      <span className={`text-[0.65rem] uppercase font-bold tracking-wider ${active ? 'text-text-primary' : 'text-text-secondary'}`}>{c.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Severity and Description Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+               {/* Severity Slider */}
+               <div className="space-y-4">
                   <div className="flex justify-between items-center mb-4">
-                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Severity Metric</label>
-                    <span className={`text-xs font-black uppercase tracking-widest ${severity > 2 ? 'text-error' : 'text-toxic-green'}`}>
-                      {severity === 1 ? 'LOW' : severity === 2 ? 'ELEVATED' : severity === 3 ? 'HIGH' : 'CRITICAL'}
+                    <label className="text-caption text-xs font-bold">Severity Impact</label>
+                    <span className={`badge py-0.5 px-3 ${
+                       severity === 1 ? 'badge-neutral' :
+                       severity === 2 ? 'badge-warn' :
+                       severity >= 3 ? 'badge-danger' : ''
+                    }`}>
+                      {severity === 1 ? 'Low' : severity === 2 ? 'Elevated' : severity === 3 ? 'High' : 'Critical'}
                     </span>
                   </div>
-                  <input 
-                    type="range" 
-                    min="1" 
-                    max="4" 
-                    value={severity} 
-                    onChange={e => setSeverity(parseInt(e.target.value))} 
-                    className="w-full h-1.5 bg-surface-highest rounded-lg appearance-none cursor-pointer accent-cyber-blue" 
-                  />
-                  <div className="flex justify-between mt-3 text-[9px] font-black text-slate-600 tracking-widest uppercase">
-                    <span>Alpha</span>
-                    <span>Omega</span>
+                  <div className="relative pt-6">
+                    <input 
+                      type="range" 
+                      min="1" 
+                      max="4" 
+                      value={severity} 
+                      onChange={e => setSeverity(parseInt(e.target.value))} 
+                      className="w-full h-1.5 bg-surface-raised rounded-lg appearance-none cursor-pointer accent-sky" 
+                    />
+                    <div className="flex justify-between mt-3 text-[0.6rem] text-text-tertiary font-bold uppercase tracking-widest">
+                       <span>Minimum</span>
+                       <span>Maximum</span>
+                    </div>
                   </div>
-                </div>
-              </div>
+                  <p className="text-[0.7rem] text-text-tertiary leading-relaxed mt-4 italic font-medium">
+                    {severity === 1 ? 'Informational report for low-risk phishing patterns.' : 
+                     severity === 2 ? 'Active threat confirmed with likely malicious intent.' :
+                     severity === 3 ? 'High-risk drainer or verified social engineering campaign.' :
+                     'Critical emergency. Immediate on-chain propagation required.'}
+                  </p>
+               </div>
 
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                   <FileText className="h-4 w-4 text-slate-500" />
-                   <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Intelligence Details</label>
-                </div>
-                <textarea 
+               {/* Evidence Section */}
+               <div className="space-y-4">
+                  <label className="text-caption text-xs font-bold">Evidence Payload (Optional)</label>
+                  <textarea 
+                    value={evidence} 
+                    onChange={e => setEvidence(e.target.value)} 
+                    className="input h-32 !resize-none !text-xs font-mono" 
+                    placeholder="Raw JSON, headers, or victim transaction hashes..." 
+                  />
+               </div>
+            </div>
+
+            {/* Narrative Description */}
+            <div className="space-y-4">
+               <label className="text-caption text-xs font-bold">Intelligence Summary</label>
+               <textarea 
                   value={description} 
                   onChange={e => setDescription(e.target.value)} 
-                  className="input-sentinel w-full h-40 !resize-none" 
-                  placeholder="Describe the malicious behavior, social engineering tactics, or smart contract vulnerabilities observed..." 
-                />
-              </div>
+                  className="input h-32 !resize-none !text-sm" 
+                  placeholder="Summarize the behavior for network validators..." 
+               />
+            </div>
 
-              <div className="pt-4">
-                <button 
-                  disabled={isLoading || !isConnected} 
-                  type="submit" 
-                  className={`w-full font-editorial text-2xl uppercase tracking-tighter p-6 rounded-3xl transition-all shadow-2xl relative overflow-hidden group/btn ${
-                    !isConnected ? 'bg-white/5 text-slate-600 cursor-not-allowed grayscale' : 'btn-sentinel-primary'
-                  }`}
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-4">
-                    {isLoading ? (
-                      <>
-                        <div className="animate-spin h-6 w-6 border-4 border-white border-t-transparent rounded-full" />
-                        BROADCASTING NODE...
-                      </>
-                    ) : (
-                      <>
-                        <Zap className="h-6 w-6 fill-white" />
-                        BROADCAST TO LEDGER
-                      </>
-                    )}
-                  </span>
-                  <div className="absolute inset-0 bg-white/10 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500" />
-                </button>
-                <div className="mt-6 flex items-center justify-center gap-4 text-slate-600 font-bold text-[9px] uppercase tracking-[0.3em]">
-                   <Shield className="h-3 w-3" /> VERIFIED BY STELLAR CONSENSUS PROTOCOL
-                </div>
+            {/* Submit Button */}
+            <div className="pt-6 border-t border-border mt-12">
+              <button 
+                disabled={isLoading || !isConnected || !url} 
+                type="submit" 
+                className={`btn-primary btn-lg w-full py-5 text-md font-bold uppercase tracking-wider relative group ${
+                   (!isConnected || !url) && 'opacity-50 cursor-not-allowed'
+                }`}
+              >
+                {isLoading ? (
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Propagating to Stellar Nodes...
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    Submit Threat Report
+                    <ChevronRight size={18} className="translate-x-0 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                )}
+              </button>
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 opacity-40">
+                 <div className="flex items-center gap-1.5 grayscale">
+                    <Shield size={12} className="text-sky" />
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest">Stellar SDK v22.1</span>
+                 </div>
+                 <div className="flex items-center gap-1.5 grayscale">
+                    <Zap size={12} className="text-warn" />
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest">Soroban RPC v1.2</span>
+                 </div>
+                 <div className="flex items-center gap-1.5 grayscale">
+                    <Lock size={12} className="text-safe" />
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest">Signed Payload</span>
+                 </div>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, Star, Send, X, ExternalLink, ThumbsUp, HelpCircle } from 'lucide-react';
-import axios from 'axios';
+import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
 
 export const FeedbackModal: React.FC = () => {
@@ -36,11 +36,9 @@ export const FeedbackModal: React.FC = () => {
         setLoading(true);
         try {
             // 1. Submit to API
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/community/feedback/submit`, {
+            await api.post(`/api/community/feedback/submit`, {
                 ...formData,
                 walletAddress
-            }, {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
 
             // 2. Open Pre-filled Google Form
@@ -82,7 +80,7 @@ export const FeedbackModal: React.FC = () => {
                     <>
                         <div className="flex items-center justify-between p-6 border-b border-slate-800 bg-slate-800/20">
                             <div className="flex items-center gap-3">
-                                <MessageSquare className="w-5 h-5 text-blue-400" />
+                                <MessageSquare className="w-5 h-5 text-red-400" />
                                 <h2 className="font-bold">Share Your Feedback</h2>
                             </div>
                             <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white transition-colors">
@@ -96,7 +94,7 @@ export const FeedbackModal: React.FC = () => {
                                     <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Your Name</label>
                                     <input 
                                         type="text" required 
-                                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500"
                                         placeholder="Full Name"
                                         value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
                                     />
@@ -116,7 +114,7 @@ export const FeedbackModal: React.FC = () => {
                                 <div>
                                     <label className="block text-xs font-bold text-slate-500 uppercase mb-2">How did you hear about us?</label>
                                     <select 
-                                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:border-blue-500"
+                                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:border-red-500"
                                         value={formData.source} onChange={e => setFormData({...formData, source: e.target.value})}
                                     >
                                         <option>Twitter</option>
@@ -147,10 +145,10 @@ export const FeedbackModal: React.FC = () => {
                                             key={s} type="button"
                                             onClick={() => setFormData({...formData, rating: s})}
                                             className={`flex-1 py-3 rounded-xl border transition-all ${
-                                                formData.rating >= s ? 'bg-blue-600/10 border-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.2)]' : 'bg-slate-950 border-slate-800'
+                                                formData.rating >= s ? 'bg-red-600/10 border-red-600 shadow-[0_0_10px_rgba(239,35,60,0.2)]' : 'bg-slate-950 border-slate-800'
                                             }`}
                                         >
-                                            <Star className={`w-5 h-5 mx-auto ${formData.rating >= s ? 'text-blue-400 fill-blue-400' : 'text-slate-600'}`} />
+                                            <Star className={`w-5 h-5 mx-auto ${formData.rating >= s ? 'text-red-400 fill-red-400' : 'text-slate-600'}`} />
                                         </button>
                                     ))}
                                 </div>
@@ -159,7 +157,7 @@ export const FeedbackModal: React.FC = () => {
                             <div>
                                 <label className="block text-xs font-bold text-slate-500 uppercase mb-2">What would you improve?</label>
                                 <textarea 
-                                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:border-blue-500 h-24 resize-none"
+                                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:border-red-500 h-24 resize-none"
                                     placeholder="Tell us what's missing..."
                                     maxLength={280}
                                     value={formData.improvement} onChange={e => setFormData({...formData, improvement: e.target.value})}
@@ -169,7 +167,7 @@ export const FeedbackModal: React.FC = () => {
 
                             <button 
                                 type="submit" disabled={loading}
-                                className="w-full py-4 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all"
+                                className="w-full py-4 bg-red-600 hover:bg-red-700 disabled:bg-slate-800 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all"
                             >
                                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
                                 Submit & Open Survey

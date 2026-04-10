@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from '../components/Navbar';
 import { useAuthStore } from '../store/authStore';
 import { Shield, Users, MessageSquare, Download, Search, CheckCircle, XCircle, ChevronLeft, ChevronRight, PieChart, Activity } from 'lucide-react';
-import axios from 'axios';
+import { api } from '../lib/api';
 import { Navigate } from 'react-router-dom';
 
 interface UserData {
@@ -40,16 +40,17 @@ export const AdminPage: React.FC = () => {
         setLoading(true);
         try {
             const [userRes, feedRes] = await Promise.all([
-                axios.get(`${import.meta.env.VITE_API_URL}/api/stats/admin/users?page=${page}&search=${search}`, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-                }),
-                axios.get(`${import.meta.env.VITE_API_URL}/api/community/feedback/summary`, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-                })
+                api.get(`/api/stats/admin/users?page=${page}&search=${search}`),
+                api.get(`/api/community/feedback/summary`)
             ]);
-            setUsers(userRes.data.users);
-            setTotalPages(userRes.data.pages);
-            setFeedback(feedRes.data);
+            
+            if (userRes.data) {
+                setUsers(userRes.data.users || []);
+                setTotalPages(userRes.data.pages || 1);
+            }
+            if (feedRes.data) {
+                setFeedback(feedRes.data);
+            }
         } catch (err) {
             console.error('Failed to fetch admin data');
         } finally {

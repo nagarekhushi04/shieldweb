@@ -26,6 +26,8 @@ export const useThreatStore = create<ThreatState>((set) => ({
     set({ isChecking: true, lastResult: null });
     try {
       const result = await checkUrl(url);
+      if (!result) throw new Error('Check failed');
+      
       set((state) => ({
         lastResult: result,
         recentChecks: [result, ...state.recentChecks].slice(0, 10),

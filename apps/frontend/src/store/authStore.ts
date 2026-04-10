@@ -74,7 +74,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       set({ isLoading: true });
       
-      const { challenge } = await getChallenge(walletAddress);
+      const challengeRes = await getChallenge(walletAddress);
+      if (!challengeRes) {
+        toast.error('Failed to get auth challenge');
+        return;
+      }
+      const { challenge } = challengeRes;
       
       let signature;
       try {
@@ -84,7 +89,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         return;
       }
 
-      const { token, user } = await verifyAuth(walletAddress, signature, challenge);
+      const authRes = await verifyAuth(walletAddress, signature, challenge);
+      if (!authRes) {
+        toast.error('Authentication verification failed');
+        return;
+      }
+      const { token, user } = authRes;
       
       localStorage.setItem('shieldweb3_token', token);
       localStorage.setItem('shieldweb3_user', JSON.stringify(user));

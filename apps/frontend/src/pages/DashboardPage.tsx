@@ -64,7 +64,7 @@ export const DashboardPage: React.FC = () => {
       setLoading(true);
       try {
         const data = await getMyReports();
-        setReports(data);
+        setReports(data || []);
       } catch (err) {
         console.error(err);
       } finally {
@@ -188,7 +188,7 @@ export const DashboardPage: React.FC = () => {
               />
               <DashCard
                 title="Reward Yield"
-                value={`+${user.shw3Balance * 1.2}`}
+                value={`+${Number(user.shw3Balance || 0) * 1.2}`}
                 subValue="EST. MONTHLY"
                 icon={TrendingUp}
                 color="#f59e0b"

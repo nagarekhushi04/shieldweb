@@ -48,7 +48,9 @@ export const ReportPage: React.FC = () => {
     setIsLoading(true);
     try {
       const result = await submitReport({ url, threatType, severity, description, evidence });
-      toast.success(`Broadcasting to Stellar... TX: ${result.txHash?.slice(0, 8)}`);
+      if (result) {
+        toast.success(`Broadcasting to Stellar... TX: ${result.txHash?.slice(0, 8)}`);
+      }
       setUrl('');
       setEvidence('');
       setDescription('');

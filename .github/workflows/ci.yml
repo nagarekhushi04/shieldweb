@@ -40,20 +40,20 @@ jobs:
 
       - name: Vercel Deploy (Preview)
         if: github.event_name == 'pull_request'
-        uses: vercel/action@v5
+        uses: amondnet/vercel-action@v35
         with:
-          token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           working-directory: apps/frontend
 
       - name: Vercel Deploy (Production)
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: vercel/action@v5
+        uses: amondnet/vercel-action@v35
         with:
-          token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          production: true
+          vercel-args: '--prod'
           working-directory: apps/frontend
 

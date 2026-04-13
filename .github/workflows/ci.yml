@@ -37,6 +37,7 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           working-directory: apps/frontend
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Vercel Deploy (Production)
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -47,4 +48,5 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: '--prod'
           working-directory: apps/frontend
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 

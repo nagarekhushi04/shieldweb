@@ -1,6 +1,3 @@
-<div align="center">
-
-![ShieldWeb3 Banner](docs/assets/banner.png)
 
 # 🛡️ ShieldWeb3
 
@@ -11,13 +8,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Commits](https://img.shields.io/badge/Commits-37+-blueviolet?style=for-the-badge)](https://github.com/nagarekhushi04/shieldweb/commits/main)
 
----
 
 **ShieldWeb3** is a premium, decentralized phishing protection layer designed to secure the Web3 ecosystem. By bridging real-time **AI detection** with the cryptographic transparency of the **Stellar blockchain**, we provide a zero-trust architecture for the modern web.
 
 [Live Demo](https://shieldweb-frontend.vercel.app) • [API Specs](docs/API.md) • [Architecture](docs/ARCHITECTURE.md) • [User Guide](docs/USER_GUIDE.md)
-
-</div>
 
 ---
 
@@ -82,19 +76,6 @@ graph TD
 
 ---
 
-## 📊 Performance & Monitoring
-
-<div align="center">
-
-### 📈 Metrics Overview
-![Metrics Dashboard](docs/assets/metrics.png)
-*(Global threat density and ML classification accuracy)*
-
-### 🖥️ Security Command Center
-![Monitoring Dashboard](docs/assets/dashboard_new.png)
-*(Real-time threat feed and researcher activity)*
-
-</div>
 
 ---
 

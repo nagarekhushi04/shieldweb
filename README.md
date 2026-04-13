@@ -83,7 +83,7 @@ graph TD
 
 ### 📈 Metrics Dashboard
 [View Live Metrics](https://shieldweb-frontend.vercel.app/metrics)
-![Metrics Dashboard](docs/assets/metrics.png)
+![Metrics Dashboard](docs/assets/metrics_new.png)
 
 ### 🖥️ Security Command Center
 ![Monitoring Dashboard](docs/assets/dashboard_new.png)

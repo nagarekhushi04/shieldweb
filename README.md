@@ -91,7 +91,7 @@ graph TD
 *(Global threat density and ML classification accuracy)*
 
 ### 🖥️ Security Command Center
-![Monitoring Dashboard](docs/assets/dashboard.png)
+![Monitoring Dashboard](docs/assets/dashboard_new.png)
 *(Real-time threat feed and researcher activity)*
 
 </div>

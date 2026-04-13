@@ -29,24 +29,31 @@ jobs:
           cd apps/frontend
           npm run build
 
+      - name: Verify Build Output
+        run: |
+          cd apps/frontend
+          if [ ! -d "dist" ]; then
+            echo "Build output not found!"
+            exit 1
+          fi
+          ls -la dist/
+
       - name: Vercel Deploy (Preview)
         if: github.event_name == 'pull_request'
-        uses: amondnet/vercel-action@v25
+        uses: vercel/action@v5
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           working-directory: apps/frontend
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Vercel Deploy (Production)
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: amondnet/vercel-action@v25
+        uses: vercel/action@v5
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
+          production: true
           working-directory: apps/frontend
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 

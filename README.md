@@ -74,10 +74,21 @@ graph TD
 | 3-29 | *Listed in Detail* | *30+ Defenders* | [View Full List](#detailed-testnet-feedback) |
 | 30-220 | *Researcher Network* | *200+ Active* | [Admin Dashboard](https://shieldweb-frontend.vercel.app/admin) |
 
----
-
 
 ---
+
+## 📊 Performance & Monitoring
+
+<div align="center">
+
+### 📈 Metrics Dashboard
+[View Live Metrics](https://shieldweb-frontend.vercel.app/metrics)
+![Metrics Dashboard](docs/assets/metrics.png)
+
+### 🖥️ Security Command Center
+![Monitoring Dashboard](docs/assets/dashboard_new.png)
+
+</div>
 
 ## 🧠 Advanced Protocol (RABC)
 

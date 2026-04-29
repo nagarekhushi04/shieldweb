@@ -149,7 +149,7 @@ When a suspicious URL is detected, ShieldWeb3 triggers a dual-path validation:
 
 ---
 
-## 🧪 User Beta Feedback
+## 🧪 User data Feedback
 
 <details id="detailed-testnet-feedback">
 <summary><b>View All 30+ User Reviews</b></summary>

@@ -176,7 +176,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => {
     const contentType = response.headers['content-type'];
-    if (typeof response.data === 'string' && (response.data.includes('<!DOCTYPE') || (contentType && !contentType.includes('application/json')))) {
+    if (typeof response.data === 'string' && (response.data.includes('<!DOCTYPE') || (typeof contentType === 'string' && !contentType.includes('application/json')))) {
       return { ...response, data: null };
     }
     return response;

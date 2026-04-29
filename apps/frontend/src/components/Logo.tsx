@@ -5,20 +5,33 @@ interface LogoProps {
   showText?: boolean;
   className?: string;
   style?: React.CSSProperties;
+  variant?: 'full' | 'icon';
 }
 
-export const ShieldLogo: React.FC<LogoProps> = ({ size = 36, showText = true, className = '', style }) => {
+export const ShieldLogo: React.FC<LogoProps> = ({ size = 36, showText = true, className = '', style, variant = 'full' }) => {
+  const logoSrc = variant === 'icon' ? '/assets/logo-icon.svg' : '/assets/logo.svg';
+  
+  if (variant === 'icon') {
+    return (
+      <img
+        src={logoSrc}
+        alt="ShieldWeb3"
+        width={size}
+        height={size}
+        className={className}
+        style={{ ...style, flexShrink: 0 }}
+      />
+    );
+  }
+
   return (
     <div className={`flex items-center gap-2 ${className}`} style={style}>
-      <div
-        style={{
-          width: size * 0.5,
-          height: size * 0.5,
-          background: '#ef233c',
-          borderRadius: 3,
-          transform: 'rotate(45deg)',
-          flexShrink: 0,
-        }}
+      <img
+        src="/assets/logo-icon.svg"
+        alt="ShieldWeb3"
+        width={size * 0.7}
+        height={size * 0.7}
+        style={{ flexShrink: 0 }}
       />
       {showText && (
         <span

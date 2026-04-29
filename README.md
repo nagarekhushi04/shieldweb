@@ -116,7 +116,8 @@ When a suspicious URL is detected, ShieldWeb3 triggers a dual-path validation:
 - 🎤 **[Demo Day Presentation](docs/PRESENTATION.md)**
 - 🛡️ **[Security Audit Checklist](docs/SECURITY_CHECKLIST.md)**
 - 📘 **[Technical documentation](docs/ARCHITECTURE.md)**
-- 🧪 **[User Beta Feedback](#detailed-testnet-feedback)**
+- **[Google Sheets Data](https://docs.google.com/spreadsheets/d/1xDjkPd3GCT9Yju-cl0x3TMfocJzcT6ragPIzdic8SVQ/edit?resourcekey=&gid=2058083177#gid=2058083177)**
+- **[User Beta Feedback](#detailed-testnet-feedback)**
 
 ---
 

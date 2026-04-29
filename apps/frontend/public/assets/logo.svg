@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" fill="none">
+  <!-- Shield Background -->
+  <defs>
+    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef233c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c9184a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f5f5f5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e5e5e5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Shield Icon -->
+  <g transform="translate(10, 10)">
+    <!-- Outer Shield -->
+    <path d="M30 5 L55 5 L55 25 C55 40 45 50 30 55 C15 50 5 40 5 25 L5 5 Z" 
+          fill="url(#shieldGradient)" 
+          stroke="#ef233c" 
+          stroke-width="1.5"/>
+    
+    <!-- Inner Shield Pattern -->
+    <path d="M30 12 L48 12 L48 26 C48 36 41 43 30 47 C19 43 12 36 12 26 L12 12 Z" 
+          fill="none" 
+          stroke="#f5f5f5" 
+          stroke-width="1" 
+          opacity="0.3"/>
+    
+    <!-- Lock Symbol -->
+    <g transform="translate(22, 20)">
+      <!-- Lock Body -->
+      <rect x="4" y="8" width="8" height="6" rx="1" fill="#f5f5f5"/>
+      <!-- Lock Shackle -->
+      <path d="M6 8 L6 5 C6 3 7 2 8 2 C9 2 10 3 10 5 L10 8" 
+            fill="none" 
+            stroke="#f5f5f5" 
+            stroke-width="1.5" 
+            stroke-linecap="round"/>
+      <!-- Keyhole -->
+      <circle cx="8" cy="10" r="1" fill="#ef233c"/>
+    </g>
+    
+    <!-- Blockchain Nodes -->
+    <circle cx="15" cy="35" r="2" fill="#f5f5f5" opacity="0.6"/>
+    <circle cx="30" cy="38" r="2" fill="#f5f5f5" opacity="0.6"/>
+    <circle cx="45" cy="35" r="2" fill="#f5f5f5" opacity="0.6"/>
+    <line x1="17" y1="35" x2="28" y2="37" stroke="#f5f5f5" stroke-width="1" opacity="0.4"/>
+    <line x1="32" y1="38" x2="43" y2="35" stroke="#f5f5f5" stroke-width="1" opacity="0.4"/>
+  </g>
+  
+  <!-- Logo Text -->
+  <text x="75" y="35" font-family="'Manrope', 'Inter', sans-serif" font-size="28" font-weight="700" fill="url(#textGradient)">
+    Shield
+  </text>
+  <text x="140" y="35" font-family="'Manrope', 'Inter', sans-serif" font-size="28" font-weight="700" fill="#ef233c">
+    Web3
+  </text>
+  
+  <!-- Tagline -->
+  <text x="75" y="55" font-family="'Inter', sans-serif" font-size="10" font-weight="500" fill="#71717a" letter-spacing="0.1em">
+    DECENTRALIZED SECURITY
+  </text>
+</svg>
